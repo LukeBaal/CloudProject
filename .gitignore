@@ -1,0 +1,3 @@
+**/node_modules
+**/*.bna
+**/envvars.txt

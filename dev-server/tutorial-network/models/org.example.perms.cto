@@ -1,0 +1,27 @@
+namespace org.example.perms
+asset Permissions identified by pairKey {
+  o String pairKey
+  o Boolean name
+  o Boolean phone
+  o Boolean address
+  o Boolean age
+  --> Company company
+}
+
+participant user identified by userId {
+  o String userId
+}
+
+participant Company identified by companyId {
+  o String companyId
+  o String name
+  o String description
+  o String address
+  o String phone
+  o String email
+}
+
+transaction newPermissions {
+  --> Permissions permission
+  --> Company company
+}
