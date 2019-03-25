@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import AuthContext from './contexts/AuthContext';
 import axios from 'axios';
@@ -9,16 +9,30 @@ import CompanyContainer from './components/company/CompanyContainer';
 import Navbar from './components/Navbar';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import PrivateRoute from './components/common/PrivateRoute';
+import Profile from './components/user/Profile';
 
-const App = () => {
-  const [auth, setAuth] = useState({
-    isAuthenticated: false,
-    user: null,
-    loginUser: () => {},
-    logoutUser: () => {}
-  });
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-  const loginUser = async userData => {
+    this.state = {
+      isAuthenticated: false,
+      user: null,
+      loginUser: this.loginUser,
+      logoutUser: this.logoutUser,
+      setUser: this.setUser
+    };
+  }
+
+  setUser = user => {
+    this.setState({
+      ...this.state,
+      user
+    });
+  };
+
+  loginUser = async userData => {
     try {
       const res = await axios.post('/api/users/login', userData);
       // Save token to local storage
@@ -28,8 +42,8 @@ const App = () => {
       // Set token to Auth header
       setAuthToken(token);
       const decoded = jwt_decode(token);
-      setAuth({
-        ...auth,
+      this.setState({
+        ...this.state,
         isAuthenticated: true,
         user: decoded
       });
@@ -38,31 +52,23 @@ const App = () => {
     }
   };
 
-  const logoutUser = () => {
+  logoutUser = () => {
     // Log user out
     localStorage.removeItem('jwtToken');
     setAuthToken('');
-    setAuth({
-      ...auth,
+    this.setState({
+      ...this.state,
       isAuthenticated: false,
       user: null
     });
   };
 
-  useEffect(() => {
-    setAuth({
-      ...auth,
-      loginUser,
-      logoutUser
-    });
-  }, []);
-
-  useEffect(() => {
+  componentDidMount() {
     if (localStorage.jwtToken) {
       setAuthToken(localStorage.jwtToken);
       const decoded = jwt_decode(localStorage.jwtToken);
-      setAuth({
-        ...auth,
+      this.setState({
+        ...this.state,
         isAuthenticated: true,
         user: decoded
       });
@@ -71,29 +77,36 @@ const App = () => {
       const currentTime = Date.now() / 1000;
       if (decoded.exp < currentTime) {
         // Logout user
-        setAuth({
-          ...auth,
+        this.setState({
+          ...this.state,
           isAuthenticated: false,
           user: null
         });
       }
     }
-  });
+  }
 
-  return (
-    <AuthContext.Provider value={auth}>
-      <Router>
-        <Navbar />
-        <div className="container mt-3">
-          <Switch>
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/companies" component={CompanyContainer} />
-          </Switch>
-        </div>
-      </Router>
-    </AuthContext.Provider>
-  );
-};
+  render() {
+    return (
+      <AuthContext.Provider value={this.state}>
+        <Router>
+          <Navbar />
+          <div className="container mt-3">
+            <Switch>
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <PrivateRoute exact path="/profile" component={Profile} />
+              <PrivateRoute
+                exact
+                path="/companies"
+                component={CompanyContainer}
+              />
+            </Switch>
+          </div>
+        </Router>
+      </AuthContext.Provider>
+    );
+  }
+}
 
 export default App;

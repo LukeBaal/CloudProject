@@ -6,7 +6,7 @@ rule Default {
   description: "Allow all partipants access to all resources"
   participant: "ANY"
   operation: ALL
-  resource: "ca.uoit.concensusnetwork.*"
+  resource: "ca.uoit.consensusnetwork.*"
   action: ALLOW 
 }
 

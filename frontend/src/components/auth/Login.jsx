@@ -22,10 +22,10 @@ const Login = () => {
     <Redirect to="/profile" />
   ) : (
     <div className="row">
-      <div className="col-md-4 offset-md-4">
+      <div className="col-md-6 offset-md-3">
         <div className="card">
           <div className="card-body">
-            <h3 className="card-title">Login</h3>
+            <h3 className="card-title text-center">Login</h3>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="email">Email</label>

@@ -4,6 +4,7 @@ const passport = require('passport');
 
 const app = express();
 
+require('./config/passport')(passport);
 const db = require('./config/keys').MONGO_URI;
 
 mongoose

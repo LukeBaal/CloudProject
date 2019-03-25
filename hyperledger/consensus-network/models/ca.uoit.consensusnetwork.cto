@@ -2,6 +2,7 @@ namespace ca.uoit.consensusnetwork
 asset Permissions identified by pairKey {
   o String pairKey
   o Boolean name
+  o Boolean email
   o Boolean phone
   o Boolean address
   o Boolean age
