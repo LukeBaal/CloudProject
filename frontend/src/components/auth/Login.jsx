@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import AuthContext from '../../contexts/AuthContext';
 import useFormInput from '../../effects/useFormInput';
 
-const Login = () => {
+const Login = props => {
   const email = useFormInput('');
   const password = useFormInput('');
 
@@ -11,7 +11,7 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(auth);
+
     await auth.loginUser({
       email: email.value,
       password: password.value
@@ -25,7 +25,9 @@ const Login = () => {
       <div className="col-md-6 offset-md-3">
         <div className="card">
           <div className="card-body">
-            <h3 className="card-title text-center">Login</h3>
+            <h3 className="card-title text-center">
+              {props.title ? props.title : 'Login'}
+            </h3>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="email">Email</label>

@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
 
 app.use('/api/users', require('./routes/users.js'));
+app.use('/api/permissions', require('./routes/permissions.js'));
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

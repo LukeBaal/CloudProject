@@ -7,6 +7,7 @@ const setAuthToken = token => {
       process.env.REACT_APP_API_TOKEN;
   } else {
     delete axios.defaults.headers.common['Authorization'];
+    delete axios.defaults.headers.common['X-Access-Token'];
   }
 };
 

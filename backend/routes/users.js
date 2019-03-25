@@ -126,15 +126,12 @@ router.post('/login', (req, res) => {
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
         // User Matched
-        const { id, firstname, lastname, email, address, phone, age } = user;
+        const { id, firstname, lastname, pairKeys } = user;
         const payload = {
           id,
           firstname,
           lastname,
-          email,
-          address,
-          phone,
-          age
+          pairKeys
         };
         jwt.sign(
           payload,
@@ -182,16 +179,7 @@ router.get(
     session: false
   }),
   (req, res) => {
-    const { id, firstname, lastname, email, address, phone, age } = req.user;
-    res.json({
-      id,
-      firstname,
-      lastname,
-      email,
-      address,
-      phone,
-      age
-    });
+    res.json({ ...req.user });
   }
 );
 

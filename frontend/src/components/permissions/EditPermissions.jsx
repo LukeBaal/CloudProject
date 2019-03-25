@@ -1,44 +1,37 @@
 import axios from 'axios';
-import crypto from 'crypto';
-import React, { useContext } from 'react';
-import AuthContext from '../../contexts/AuthContext';
-import CompanyContext from '../../contexts/CompanyContext';
+import React from 'react';
 import useCheckInput from '../../effects/useCheckInput';
-import useFormInput from '../../effects/useFormInput';
 
-const AddPermissions = props => {
-  const companies = useContext(CompanyContext);
-  const auth = useContext(AuthContext);
+const EditPermissions = props => {
+  const {
+    pairKey,
+    name,
+    email,
+    phone,
+    address,
+    age,
+    company
+  } = props.location.state.permissions;
 
-  const companySelect = useFormInput(-1);
-  const name = useCheckInput(true);
-  const email = useCheckInput(false);
-  const phone = useCheckInput(false);
-  const address = useCheckInput(false);
-  const age = useCheckInput(false);
+  const nameInput = useCheckInput(name);
+  const emailInput = useCheckInput(email);
+  const phoneInput = useCheckInput(phone);
+  const addressInput = useCheckInput(address);
+  const ageInput = useCheckInput(age);
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    // Hash the user's id and the company's id
-    const hash = crypto.createHash('sha256');
-    hash.update(`${auth.user.id}-${companySelect.value}`);
-    const pairKey = hash.digest('hex');
-
-    console.log(pairKey);
-    console.log(auth.user);
-    console.log(companySelect.value);
-    await axios.post(
-      `http://localhost:3000/api/permissions`,
+    await axios.put(
+      `http://localhost:3000/api/permissions/${pairKey}`,
       JSON.stringify({
         $class: 'ca.uoit.consensusnetwork.Permissions',
         pairKey,
-        name: name.checked,
-        email: email.checked,
-        phone: phone.checked,
-        address: address.checked,
-        age: age.checked,
-        company: companySelect.value
+        name: nameInput.checked,
+        email: emailInput.checked,
+        phone: phoneInput.checked,
+        address: addressInput.checked,
+        age: ageInput.checked,
+        company: company.companyId
       }),
       {
         headers: {
@@ -48,10 +41,6 @@ const AddPermissions = props => {
       }
     );
 
-    await axios.post('/api/permissions', {
-      pairKey
-    });
-
     props.history.push('/profile');
   }
 
@@ -60,30 +49,14 @@ const AddPermissions = props => {
       <div className="col-md-6 offset-md-3">
         <div className="card">
           <div className="card-body">
-            <h3 className="card-title text-center">Add Permissions</h3>
+            <h3 className="card-title text-center">Edit Permissions</h3>
             <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="company">Company</label>
-                <select
-                  name="company"
-                  id="company"
-                  className="custom-select mb-2"
-                  {...companySelect}
-                >
-                  <option value="-1">Choose a Company</option>
-                  {companies.map(company => (
-                    <option value={company.companyId} key={company.companyId}>
-                      {company.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
               <div className="custom-control custom-switch">
                 <input
                   type="checkbox"
                   className="custom-control-input"
                   id="name"
-                  {...name}
+                  {...nameInput}
                 />
                 <label htmlFor="name" className="custom-control-label">
                   Name
@@ -94,7 +67,7 @@ const AddPermissions = props => {
                   type="checkbox"
                   className="custom-control-input"
                   id="email"
-                  {...email}
+                  {...emailInput}
                 />
                 <label htmlFor="email" className="custom-control-label">
                   Email
@@ -104,7 +77,7 @@ const AddPermissions = props => {
                 <input
                   type="checkbox"
                   className="custom-control-input"
-                  {...phone}
+                  {...phoneInput}
                   id="phone"
                 />
                 <label htmlFor="phone" className="custom-control-label">
@@ -115,7 +88,7 @@ const AddPermissions = props => {
                 <input
                   type="checkbox"
                   className="custom-control-input"
-                  {...address}
+                  {...addressInput}
                   id="address"
                 />
                 <label htmlFor="address" className="custom-control-label">
@@ -127,14 +100,14 @@ const AddPermissions = props => {
                   type="checkbox"
                   className="custom-control-input"
                   id="age"
-                  {...age}
+                  {...ageInput}
                 />
                 <label htmlFor="age" className="custom-control-label">
                   Age
                 </label>
               </div>
 
-              <button className="mt-2 btn btn-block btn-success">Submit</button>
+              <button className="mt-2 btn btn-block btn-warning">Edit</button>
             </form>
           </div>
         </div>
@@ -143,4 +116,4 @@ const AddPermissions = props => {
   );
 };
 
-export default AddPermissions;
+export default EditPermissions;

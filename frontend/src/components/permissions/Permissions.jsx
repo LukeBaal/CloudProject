@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const Permissions = ({ permissions }) => {
@@ -14,7 +15,15 @@ const Permissions = ({ permissions }) => {
   return (
     <div className="card mt-2">
       <div className="card-body">
-        <h3 className="lead">Company ID: {company.name}</h3>
+        <div className="d-flex justify-content-between">
+          <h4 className="lead">Company ID: {company.name}</h4>
+          <Link
+            className="btn btn-warning"
+            to={{ pathname: '/permissions/edit', state: { permissions } }}
+          >
+            <i className="fas fa-pencil-alt" />
+          </Link>
+        </div>
         <ul className="list-group">
           <li className="list-group-item" name="pairKey">
             Pair Key: {pairKey}

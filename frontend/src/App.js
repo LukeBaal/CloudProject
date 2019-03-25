@@ -1,34 +1,42 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import AuthContext from './contexts/AuthContext';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-
-import setAuthToken from './utils/setAuthToken';
-import CompanyContainer from './components/company/CompanyContainer';
-import Navbar from './components/Navbar';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import PrivateRoute from './components/common/PrivateRoute';
+import CompanyContainer from './components/company/CompanyContainer';
+import Navbar from './components/Navbar';
+import AddPermissions from './components/permissions/AddPermissions';
+import EditPermissions from './components/permissions/EditPermissions';
+import Landing from './components/common/Landing';
 import Profile from './components/user/Profile';
+import AuthContext from './contexts/AuthContext';
+import CompanyContext from './contexts/CompanyContext';
+import setAuthToken from './utils/setAuthToken';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isAuthenticated: false,
-      user: null,
-      loginUser: this.loginUser,
-      logoutUser: this.logoutUser,
-      setUser: this.setUser
+      auth: {
+        isAuthenticated: false,
+        user: null,
+        loginUser: this.loginUser,
+        logoutUser: this.logoutUser,
+        setUser: this.setUser
+      },
+      companies: []
     };
   }
 
   setUser = user => {
     this.setState({
-      ...this.state,
-      user
+      auth: {
+        ...this.state.auth,
+        user
+      }
     });
   };
 
@@ -43,9 +51,11 @@ class App extends Component {
       setAuthToken(token);
       const decoded = jwt_decode(token);
       this.setState({
-        ...this.state,
-        isAuthenticated: true,
-        user: decoded
+        auth: {
+          ...this.state.auth,
+          isAuthenticated: true,
+          user: decoded
+        }
       });
     } catch (e) {
       console.log(e);
@@ -57,20 +67,28 @@ class App extends Component {
     localStorage.removeItem('jwtToken');
     setAuthToken('');
     this.setState({
-      ...this.state,
-      isAuthenticated: false,
-      user: null
+      auth: {
+        ...this.state.auth,
+        isAuthenticated: false,
+        user: null
+      }
     });
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     if (localStorage.jwtToken) {
       setAuthToken(localStorage.jwtToken);
       const decoded = jwt_decode(localStorage.jwtToken);
+
+      const res = await axios.get('http://localhost:3000/api/company');
+
       this.setState({
-        ...this.state,
-        isAuthenticated: true,
-        user: decoded
+        companies: res.data,
+        auth: {
+          ...this.state.auth,
+          isAuthenticated: true,
+          user: decoded
+        }
       });
 
       // Check for expired token
@@ -78,9 +96,11 @@ class App extends Component {
       if (decoded.exp < currentTime) {
         // Logout user
         this.setState({
-          ...this.state,
-          isAuthenticated: false,
-          user: null
+          auth: {
+            ...this.state.auth,
+            isAuthenticated: false,
+            user: null
+          }
         });
       }
     }
@@ -88,22 +108,42 @@ class App extends Component {
 
   render() {
     return (
-      <AuthContext.Provider value={this.state}>
-        <Router>
-          <Navbar />
-          <div className="container mt-3">
-            <Switch>
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
-              <PrivateRoute exact path="/profile" component={Profile} />
-              <PrivateRoute
-                exact
-                path="/companies"
-                component={CompanyContainer}
-              />
-            </Switch>
-          </div>
-        </Router>
+      <AuthContext.Provider value={this.state.auth}>
+        <CompanyContext.Provider value={this.state.companies}>
+          <Router>
+            <Navbar />
+            <div className="container mt-3">
+              <Switch>
+                <Route exact path="/" component={Landing} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/login" component={Login} />
+
+                <Route exact path="/company/register" component={Register} />
+                <Route
+                  exact
+                  path="/company/login"
+                  render={() => <Login title="Company Login" />}
+                />
+                <PrivateRoute exact path="/profile" component={Profile} />
+                <PrivateRoute
+                  exact
+                  path="/permissions/add"
+                  component={AddPermissions}
+                />
+                <PrivateRoute
+                  exact
+                  path="/permissions/edit"
+                  component={EditPermissions}
+                />
+                <PrivateRoute
+                  exact
+                  path="/companies"
+                  component={CompanyContainer}
+                />
+              </Switch>
+            </div>
+          </Router>
+        </CompanyContext.Provider>
       </AuthContext.Provider>
     );
   }
