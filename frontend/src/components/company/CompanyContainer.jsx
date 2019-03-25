@@ -1,6 +1,7 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, lazy, Suspense } from 'react';
 import { reducer, addCompany } from '../../reducers/CompanyReducer';
-import Company from './Company';
+
+const Company = lazy(() => import('./Company'));
 
 const CompanyContainer = () => {
   const [{ companies }, dispatch] = useReducer(reducer, reducer());
@@ -25,20 +26,20 @@ const CompanyContainer = () => {
       }
     ];
 
-    companies.forEach(company => dispatch(addCompany(company)));
+    companies.forEach(async company => dispatch(addCompany(company)));
   }, []);
 
-  return companies ? (
+  return (
     <div>
       <h2>Companies</h2>
-      <ul className="list-group">
-        {companies.map(company => (
-          <Company key={company.companyId} company={company} />
-        ))}
-      </ul>
+      <Suspense fallback={<div>Loading...</div>}>
+        <ul className="list-group">
+          {companies.map(company => (
+            <Company key={company.companyId} company={company} />
+          ))}
+        </ul>
+      </Suspense>
     </div>
-  ) : (
-    <h3>Loading...</h3>
   );
 };
 
