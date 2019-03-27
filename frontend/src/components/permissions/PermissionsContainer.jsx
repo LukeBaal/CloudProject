@@ -28,7 +28,6 @@ const PermissionsContainer = () => {
       const params = {
         include: 'resolve'
       };
-      console.log(auth.user.pairKeys);
 
       if (auth.user.pairKeys.length >= 2) {
         params.where = {

@@ -179,7 +179,7 @@ router.get(
     session: false
   }),
   (req, res) => {
-    res.json({ ...req.user });
+    res.json({ user: req.user });
   }
 );
 

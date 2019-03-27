@@ -25,9 +25,6 @@ const AddPermissions = props => {
     hash.update(`${auth.user.id}-${companySelect.value}`);
     const pairKey = hash.digest('hex');
 
-    console.log(pairKey);
-    console.log(auth.user);
-    console.log(companySelect.value);
     await axios.post(
       `http://localhost:3000/api/permissions`,
       JSON.stringify({
@@ -48,9 +45,14 @@ const AddPermissions = props => {
       }
     );
 
+    // Add pair key to user entry in DB
     await axios.post('/api/permissions', {
       pairKey
     });
+
+    // Update user
+    const res = await axios.get('/api/users/current');
+    auth.setUser({ user: res.data });
 
     props.history.push('/profile');
   }

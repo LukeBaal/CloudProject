@@ -1,18 +1,35 @@
-import React, { useContext } from 'react';
-import useFormInput from '../../effects/useFormInput';
+import React, { useContext, useEffect } from 'react';
+import useFormInputWithSetter from '../../effects/useFormInputWithSetter';
 import axios from 'axios';
 import AuthContext from '../../contexts/AuthContext';
 
 const UpdateProfile = () => {
   const auth = useContext(AuthContext);
-  const { firstname, lastname, email, address, phone, age } = auth.user;
 
-  const firstnameInput = useFormInput(firstname);
-  const lastnameInput = useFormInput(lastname);
-  const emailInput = useFormInput(email);
-  const addressInput = useFormInput(address);
-  const phoneInput = useFormInput(phone);
-  const ageInput = useFormInput(age);
+  const firstnameInput = useFormInputWithSetter('');
+  const lastnameInput = useFormInputWithSetter('');
+  const emailInput = useFormInputWithSetter('');
+  const addressInput = useFormInputWithSetter('');
+  const phoneInput = useFormInputWithSetter('');
+  const ageInput = useFormInputWithSetter('');
+
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const res = await axios.get('/api/users/current');
+        const { firstname, lastname, email, phone, address, age } = res.data;
+        firstnameInput.setValue(firstname);
+        lastnameInput.setValue(lastname);
+        emailInput.setValue(email);
+        addressInput.setValue(address);
+        phoneInput.setValue(phone);
+        ageInput.setValue(age);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    fetchUserData();
+  });
 
   async function handleSubmit(e) {
     e.preventDefault();
