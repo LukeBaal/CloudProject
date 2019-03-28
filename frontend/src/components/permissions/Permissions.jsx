@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const Permissions = ({ permissions }) => {
+const Permissions = ({ permissions, showCompanyId }) => {
   const { pairKey, name, email, phone, address, age, company } = permissions;
 
   const getIcon = field =>
@@ -15,16 +15,20 @@ const Permissions = ({ permissions }) => {
   return (
     <div className="card mt-2">
       <div className="card-body">
-        <div className="d-flex justify-content-between">
-          <h4 className="lead">Company ID: {company.name}</h4>
-          <Link
-            className="btn btn-warning"
-            to={{ pathname: '/permissions/edit', state: { permissions } }}
-          >
-            <i className="fas fa-pencil-alt" />
-          </Link>
-        </div>
-        <ul className="list-group">
+        {showCompanyId ? (
+          <div className="d-flex justify-content-between">
+            <h4 className="lead">Company ID: {company.name}</h4>
+            <Link
+              className="btn btn-warning"
+              to={{ pathname: '/permissions/edit', state: { permissions } }}
+            >
+              <i className="fas fa-pencil-alt" />
+            </Link>
+          </div>
+        ) : (
+          ''
+        )}
+        <ul className="list-group mt-2">
           <li className="list-group-item" name="pairKey">
             Pair Key: {pairKey}
           </li>
@@ -47,6 +51,10 @@ const Permissions = ({ permissions }) => {
       </div>
     </div>
   );
+};
+
+Permissions.defaultProps = {
+  showCompanyId: true
 };
 
 Permissions.propTypes = {

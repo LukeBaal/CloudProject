@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useFormInput from '../../effects/useFormInput';
 import axios from 'axios';
 import uuidv4 from 'uuid/v4';
@@ -12,7 +12,10 @@ const Register = props => {
   const password = useFormInput('');
   const password2 = useFormInput('');
 
-  // [{"$class":"ca.uoit.consensusnetwork.Company","companyId":"72dd4177-3432-4944-b164-d8786f797a09","name":"Fake co.","description":"Car insurance","address":"67 Simcoe St.","phone":"555-423-7894","email":"contact@fake.com"},{"$class":"ca.uoit.consensusnetwork.Company","companyId":"cc3efd62-81bf-4f24-9691-0d0d3383ddb3","name":"ACME Insurance","description":"We ensure we insure it all","address":"25 Main St.","phone":"555-123-4567","email":"contact@acme.org"}]
+  const [submitBtnText, setSubmitBtnText] = useState('Submit');
+
+  // {"$class":"ca.uoit.consensusnetwork.Company","companyId":"72dd4177-3432-4944-b164-d8786f797a09","name":"Fake co.","description":"Car insurance","address":"67 Simcoe St.","phone":"555-423-7894","email":"contact@fake.com"}
+  // {"$class":"ca.uoit.consensusnetwork.Company","companyId":"cc3efd62-81bf-4f24-9691-0d0d3383ddb3","name":"ACME Insurance","description":"We ensure we insure it all","address":"25 Main St.","phone":"555-123-4567","email":"contact@acme.org"}
 
   // {
   //   "$class": "ca.uoit.consensusnetwork.Company",
@@ -26,16 +29,17 @@ const Register = props => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setSubmitBtnText('Sending...');
     if (password.value === password2.value) {
-      // try {
-      //   // Add login info to DB
-      //   await axios.post('/api/company/register', {
-      //     name: name.value,
-      //     password: password.value
-      //   });
-      // } catch (e) {
-      //   console.log(e);
-      // }
+      try {
+        // Add login info to DB
+        await axios.post('/api/company/register', {
+          name: name.value,
+          password: password.value
+        });
+      } catch (e) {
+        console.log(e);
+      }
 
       try {
         // Add Company info to Hyperledger
@@ -48,6 +52,8 @@ const Register = props => {
           phone: phone.value,
           email: email.value
         });
+
+        props.history.push('/company/login');
       } catch (e) {
         console.log(e);
       }
@@ -130,7 +136,7 @@ const Register = props => {
                 />
               </div>
               <button type="submit" className="btn btn-block btn-primary">
-                Register
+                {submitBtnText}
               </button>
             </form>
           </div>

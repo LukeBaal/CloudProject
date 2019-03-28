@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../contexts/AuthContext';
 import axios from 'axios';
+import Permissions from '../permissions/Permissions';
 
 const CompanyProfile = () => {
   const auth = useContext(AuthContext);
@@ -9,24 +10,30 @@ const CompanyProfile = () => {
   useEffect(() => {
     async function fetchData() {
       // Get company entry in hyperleder
-
-      let URLParams = encodeURIComponent(JSON.stringify(params));
-      let res = await axios.get('http://localhost:3000/api/company');
-
-      // Get Permissions for company
       let params = {
         where: {
-          company: auth.company.id
+          name: auth.company.name
         }
       };
+      let URLParams = encodeURIComponent(JSON.stringify(params));
+      let res = await axios.get(
+        `http://localhost:3000/api/company?filter=${URLParams}`
+      );
 
+      // Get Permissions for company
+      params = {
+        where: {
+          company: `resource:ca.uoit.consensusnetwork.Company#${
+            res.data[0].companyId
+          }`
+        }
+      };
       URLParams = encodeURIComponent(JSON.stringify(params));
       res = await axios.get(
         `http://localhost:3000/api/permissions?filter=${URLParams}`
       );
 
       setPermissions(res.data);
-      console.log(permissions);
     }
     fetchData();
   }, []);
@@ -35,6 +42,15 @@ const CompanyProfile = () => {
     <div className="card">
       <div className="card-body">
         <h3 className="card-title">{auth.company.name}</h3>
+        <ul className="list-group">
+          {permissions.map(permissionsItem => (
+            <Permissions
+              key={permissionsItem}
+              permissions={permissionsItem}
+              showCompanyId={false}
+            />
+          ))}
+        </ul>
       </div>
     </div>
   );

@@ -122,7 +122,14 @@ cat << EOF > DevServer_connection.json
     },
     "peers": {
         "peer0.org1.example.com": {
-            "url": "grpc://${HOST}:7051"
+            "url": "grpc://${HOST}:7051",
+            "grpcOptions": {
+                "grpc.keepalive_time_ms": 120000,
+                "grpc.http2.min_time_between_pings_ms": 120000,
+                "grpc.keepalive_timeout_ms": 20000,
+                "grpc.http2.max_pings_without_data": 0,
+                "grpc.keepalive_permit_without_calls": 1
+            }
         }
     },
     "certificateAuthorities": {
@@ -130,7 +137,8 @@ cat << EOF > DevServer_connection.json
             "url": "http://${HOST}:7054",
             "caName": "ca.org1.example.com"
         }
-    }
+    },
+    
 }
 EOF
 
