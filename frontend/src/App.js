@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import CompanyLogin from './components/company/CompanyLogin';
+import CompanyRegister from './components/company/CompanyRegister';
 import PrivateRoute from './components/common/PrivateRoute';
 import CompanyContainer from './components/company/CompanyContainer';
 import Navbar from './components/Navbar';
@@ -118,12 +120,12 @@ class App extends Component {
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
 
-                <Route exact path="/company/register" component={Register} />
                 <Route
                   exact
-                  path="/company/login"
-                  render={() => <Login title="Company Login" />}
+                  path="/company/register"
+                  component={CompanyRegister}
                 />
+                <Route exact path="/company/login" component={CompanyLogin} />
                 <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute
                   exact
