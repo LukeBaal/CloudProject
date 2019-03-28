@@ -12,6 +12,8 @@ const Register = props => {
   const password = useFormInput('');
   const password2 = useFormInput('');
 
+  // [{"$class":"ca.uoit.consensusnetwork.Company","companyId":"72dd4177-3432-4944-b164-d8786f797a09","name":"Fake co.","description":"Car insurance","address":"67 Simcoe St.","phone":"555-423-7894","email":"contact@fake.com"},{"$class":"ca.uoit.consensusnetwork.Company","companyId":"cc3efd62-81bf-4f24-9691-0d0d3383ddb3","name":"ACME Insurance","description":"We ensure we insure it all","address":"25 Main St.","phone":"555-123-4567","email":"contact@acme.org"}]
+
   // {
   //   "$class": "ca.uoit.consensusnetwork.Company",
   //   "address": "123 Test Dr.",
@@ -57,7 +59,10 @@ const Register = props => {
       <div className="col-md-6 offset-md-3">
         <div className="card">
           <div className="card-body">
-            <h3 className="card-title">Company Register</h3>
+            <h3 className="card-title">
+              <i className="fas fa-building mr-2" />
+              Company Register
+            </h3>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="name">Company Name</label>

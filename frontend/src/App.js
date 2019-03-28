@@ -7,12 +7,14 @@ import Register from './components/auth/Register';
 import CompanyLogin from './components/company/CompanyLogin';
 import CompanyRegister from './components/company/CompanyRegister';
 import PrivateRoute from './components/common/PrivateRoute';
+import CompanyPrivateRoute from './components/common/CompanyPrivateRoute';
 import CompanyContainer from './components/company/CompanyContainer';
 import Navbar from './components/Navbar';
 import AddPermissions from './components/permissions/AddPermissions';
 import EditPermissions from './components/permissions/EditPermissions';
 import Landing from './components/common/Landing';
 import Profile from './components/user/Profile';
+import CompanyProfile from './components/company/CompanyProfile';
 import AuthContext from './contexts/AuthContext';
 import CompanyContext from './contexts/CompanyContext';
 import setAuthToken from './utils/setAuthToken';
@@ -25,8 +27,11 @@ class App extends Component {
       auth: {
         isAuthenticated: false,
         user: null,
+        company: null,
         loginUser: this.loginUser,
         logoutUser: this.logoutUser,
+        loginCompany: this.loginCompany,
+        logoutCompany: this.logoutCompany,
         setUser: this.setUser
       },
       companies: []
@@ -43,6 +48,9 @@ class App extends Component {
   };
 
   loginUser = async userData => {
+    if (this.state.isAuthenticated) {
+      return;
+    }
     try {
       const res = await axios.post('/api/users/login', userData);
       // Save token to local storage
@@ -72,7 +80,44 @@ class App extends Component {
       auth: {
         ...this.state.auth,
         isAuthenticated: false,
-        user: null
+        user: null,
+        company: null
+      }
+    });
+  };
+
+  loginCompany = async companyData => {
+    try {
+      const res = await axios.post('/api/company/login', companyData);
+      // Save token to local storage
+      const { token } = res.data;
+      localStorage.setItem('jwtTokenCompany', token);
+
+      // Set token to Auth header
+      setAuthToken(token);
+      const decoded = jwt_decode(token);
+      console.log('Setting auth state');
+      this.setState({
+        auth: {
+          ...this.state.companyAuth,
+          isAuthenticated: true,
+          company: decoded
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  logoutCompany = () => {
+    // Log user out
+    localStorage.removeItem('jwtTokenCompany');
+    setAuthToken('');
+    this.setState({
+      auth: {
+        ...this.state.companyAuth,
+        isAuthenticated: false,
+        company: null
       }
     });
   };
@@ -84,6 +129,7 @@ class App extends Component {
 
       const res = await axios.get('http://localhost:3000/api/company');
 
+      console.log('Setting user');
       this.setState({
         companies: res.data,
         auth: {
@@ -102,6 +148,32 @@ class App extends Component {
             ...this.state.auth,
             isAuthenticated: false,
             user: null
+          }
+        });
+      }
+    } else if (localStorage.jwtTokenCompany) {
+      setAuthToken(localStorage.jwtTokenCompany);
+      const decoded = jwt_decode(localStorage.jwtTokenCompany);
+
+      console.log('Setting company');
+
+      this.setState({
+        auth: {
+          ...this.state.auth,
+          isAuthenticated: true,
+          company: decoded
+        }
+      });
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000;
+      if (decoded.exp < currentTime) {
+        // Logout company
+        this.setState({
+          auth: {
+            ...this.state.auth,
+            isAuthenticated: false,
+            company: null
           }
         });
       }
@@ -127,6 +199,11 @@ class App extends Component {
                 />
                 <Route exact path="/company/login" component={CompanyLogin} />
                 <PrivateRoute exact path="/profile" component={Profile} />
+                <CompanyPrivateRoute
+                  exact
+                  path="/company/profile"
+                  component={CompanyProfile}
+                />
                 <PrivateRoute
                   exact
                   path="/permissions/add"

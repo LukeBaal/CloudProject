@@ -1,13 +1,74 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext';
 
 const Navbar = () => {
   const auth = useContext(AuthContext);
 
+  const guestLinks = (
+    <>
+      <NavLink exact className="nav-item nav-link" to="/login">
+        Login
+      </NavLink>
+      <NavLink exact className="nav-item nav-link" to="/register">
+        Register
+      </NavLink>
+      <NavLink exact className="nav-item nav-link" to="/company/login">
+        Company Login
+      </NavLink>
+      <NavLink exact className="nav-item nav-link" to="/company/register">
+        Company Register
+      </NavLink>
+    </>
+  );
+  const [links, setLinks] = useState(guestLinks);
+
   function handleLogout() {
     auth.logoutUser();
   }
+
+  function handleCompanyLogout() {
+    auth.logoutCompany();
+  }
+
+  useEffect(() => {
+    if (auth.isAuthenticated && auth.user) {
+      setLinks(
+        <>
+          <NavLink exact className="nav-item nav-link" to="/companies">
+            Companies
+          </NavLink>
+          <Link className="nav-item nav-link" to="/profile">{`${
+            auth.user.firstname
+          } ${auth.user.lastname}`}</Link>
+          <button
+            className="nav-item nav-link btn btn-flat"
+            to="/login"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </>
+      );
+    } else if (auth.isAuthenticated && auth.company) {
+      setLinks(
+        <>
+          <Link className="nav-item nav-link" to="/company/profile">
+            {auth.company.name}
+          </Link>
+          <button
+            className="nav-item nav-link btn btn-flat"
+            to="/company/login"
+            onClick={handleCompanyLogout}
+          >
+            Logout
+          </button>
+        </>
+      );
+    } else {
+      setLinks(guestLinks);
+    }
+  }, [auth.isAuthenticated]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -33,34 +94,7 @@ const Navbar = () => {
           </NavLink>
         </div>
 
-        <ul className="navbar-nav ml-auto">
-          {auth.isAuthenticated ? (
-            <>
-              <NavLink exact className="nav-item nav-link" to="/companies">
-                Companies
-              </NavLink>
-              <Link className="nav-item nav-link" to="/profile">{`${
-                auth.user.firstname
-              } ${auth.user.lastname}`}</Link>
-              <button
-                className="nav-item nav-link btn btn-flat"
-                to="/login"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <NavLink exact className="nav-item nav-link" to="/login">
-                Login
-              </NavLink>
-              <NavLink exact className="nav-item nav-link" to="/register">
-                Register
-              </NavLink>
-            </>
-          )}
-        </ul>
+        <ul className="navbar-nav ml-auto">{links}</ul>
       </div>
     </nav>
   );

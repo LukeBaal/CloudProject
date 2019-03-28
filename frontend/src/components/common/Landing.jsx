@@ -5,11 +5,13 @@ import AuthContext from '../../contexts/AuthContext';
 const Landing = () => {
   const auth = useContext(AuthContext);
 
-  return auth.isAuthenticated ? (
-    <Redirect to="/profile" />
-  ) : (
-    <Redirect to="/login" />
-  );
+  if (auth.isAuthenticated && auth.user) {
+    return <Redirect to="/profile" />;
+  } else if (auth.isAuthenticated && auth.company) {
+    return <Redirect to="/company/profile" />;
+  } else {
+    return <Redirect to="/login" />;
+  }
 };
 
 export default Landing;

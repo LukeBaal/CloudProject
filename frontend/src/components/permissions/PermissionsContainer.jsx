@@ -1,10 +1,4 @@
-import React, {
-  useReducer,
-  useContext,
-  useEffect,
-  lazy,
-  Suspense
-} from 'react';
+import React, { useReducer, useEffect, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -12,7 +6,6 @@ import {
   setPermissions,
   defaultState
 } from '../../reducers/PermissionsReducer';
-import AuthContext from '../../contexts/AuthContext';
 
 const Permissions = lazy(() => import('./Permissions'));
 
@@ -21,7 +14,6 @@ const PermissionsContainer = () => {
     PermissionsReducer,
     defaultState
   );
-  const auth = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchPermissions() {
@@ -29,13 +21,16 @@ const PermissionsContainer = () => {
         include: 'resolve'
       };
 
-      if (auth.user.pairKeys.length >= 2) {
+      const userRes = await axios.get('/api/users/current');
+      const user = userRes.data.user;
+
+      if (user.pairKeys.length >= 2) {
         params.where = {
-          or: auth.user.pairKeys.map(pairKey => ({ pairKey }))
+          or: user.pairKeys.map(pairKey => ({ pairKey }))
         };
-      } else if (auth.user.pairKeys.length === 1) {
+      } else if (user.pairKeys.length === 1) {
         params.where = {
-          pairKey: auth.user.pairKeys[0]
+          pairKey: user.pairKeys[0]
         };
       } else {
         params.where = {

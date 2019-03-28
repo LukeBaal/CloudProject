@@ -86,7 +86,7 @@ router.post('/register', (req, res) => {
 });
 
 // @route PUT /api/users
-// @desc Update user
+// @desc Update user and send back new jwt
 // @access Private
 router.put(
   '/',
@@ -96,8 +96,32 @@ router.put(
   async (req, res) => {
     const { _id } = req.user;
     try {
+      console.log(req.body);
+      console.log(req.user);
       const user = await User.updateOne({ _id }, req.body);
-      res.status(200).json({ user });
+      const { id, firstname, lastname, email, phone, address, age } = user;
+      const payload = {
+        id,
+        firstname,
+        lastname,
+        email,
+        phone,
+        address,
+        age
+      };
+      jwt.sign(
+        payload,
+        keys.MONGO_SECRET,
+        {
+          expiresIn: 3600
+        },
+        (err, token) => {
+          res.json({
+            success: true,
+            token: `Bearer ${token}`
+          });
+        }
+      );
     } catch (e) {
       console.log(e);
       res.status(500).json({ error: 'Error updating user' });
@@ -126,12 +150,15 @@ router.post('/login', (req, res) => {
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
         // User Matched
-        const { id, firstname, lastname, pairKeys } = user;
+        const { id, firstname, lastname, email, phone, address, age } = user;
         const payload = {
           id,
           firstname,
           lastname,
-          pairKeys
+          email,
+          phone,
+          address,
+          age
         };
         jwt.sign(
           payload,

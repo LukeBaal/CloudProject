@@ -94,9 +94,9 @@ router.post('/login', (req, res) => {
   // Find company by name
   Company.findOne({
     name
-  }).then(user => {
-    // Check for user
-    if (!user) {
+  }).then(company => {
+    // Check for company
+    if (!company) {
       errors.name = 'Company not found';
       return res.status(404).json(errors);
     }

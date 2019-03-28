@@ -6,10 +6,10 @@ const PrivateRoute = props => {
   const auth = useContext(AuthContext);
 
   const { component, render, ...rest } = props;
-  if (auth.isAuthenticated && auth.user) {
+  if (auth.isAuthenticated && auth.company) {
     return <Route {...rest} component={component} />;
   } else {
-    return <Redirect to="/login" />;
+    return <Redirect to="/company/login" />;
   }
 };
 

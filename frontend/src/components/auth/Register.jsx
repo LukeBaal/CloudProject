@@ -37,7 +37,10 @@ const Register = props => {
       <div className="col-md-6 offset-md-3">
         <div className="card">
           <div className="card-body">
-            <h3 className="card-title">Register</h3>
+            <h3 className="card-title">
+              <i className="fas fa-user mr-2" />
+              Register
+            </h3>
             <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-md-6 form-group">

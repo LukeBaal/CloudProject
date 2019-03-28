@@ -1,6 +1,6 @@
 import axios from 'axios';
 import crypto from 'crypto';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AuthContext from '../../contexts/AuthContext';
 import CompanyContext from '../../contexts/CompanyContext';
 import useCheckInput from '../../effects/useCheckInput';
@@ -17,8 +17,11 @@ const AddPermissions = props => {
   const address = useCheckInput(false);
   const age = useCheckInput(false);
 
+  const [submitBtnText, setSubmitBtnText] = useState('Submit');
+
   async function handleSubmit(e) {
     e.preventDefault();
+    setSubmitBtnText('Sending...');
 
     // Hash the user's id and the company's id
     const hash = crypto.createHash('sha256');
@@ -51,8 +54,8 @@ const AddPermissions = props => {
     });
 
     // Update user
-    const res = await axios.get('/api/users/current');
-    auth.setUser({ user: res.data });
+    // const res = await axios.get('/api/users/current');
+    // auth.setUser({ user: res.data });
 
     props.history.push('/profile');
   }
@@ -136,7 +139,9 @@ const AddPermissions = props => {
                 </label>
               </div>
 
-              <button className="mt-2 btn btn-block btn-success">Submit</button>
+              <button className="mt-2 btn btn-block btn-success">
+                {submitBtnText}
+              </button>
             </form>
           </div>
         </div>

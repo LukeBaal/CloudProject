@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import useCheckInput from '../../effects/useCheckInput';
 
 const EditPermissions = props => {
@@ -19,8 +19,13 @@ const EditPermissions = props => {
   const addressInput = useCheckInput(address);
   const ageInput = useCheckInput(age);
 
+  const [submitBtnText, setSubmitBtnText] = useState('Edit');
+
   async function handleSubmit(e) {
     e.preventDefault();
+
+    setSubmitBtnText('Sending...');
+
     await axios.put(
       `http://localhost:3000/api/permissions/${pairKey}`,
       JSON.stringify({
@@ -107,7 +112,9 @@ const EditPermissions = props => {
                 </label>
               </div>
 
-              <button className="mt-2 btn btn-block btn-warning">Edit</button>
+              <button className="mt-2 btn btn-block btn-warning">
+                {submitBtnText}
+              </button>
             </form>
           </div>
         </div>
