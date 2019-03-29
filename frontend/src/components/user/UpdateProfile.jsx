@@ -34,7 +34,7 @@ const UpdateProfile = () => {
       setAuthToken(token);
       localStorage.setItem('jwtToken', token);
       const decoded = await jwt_decode(token);
-      auth.setUser(decoded);
+      auth.user = decoded;
     } catch (e) {
       console.log(e);
     }

@@ -2,20 +2,28 @@ import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import AuthContext from '../../contexts/AuthContext';
 import useFormInput from '../../effects/useFormInput';
+import { loginUser } from '../../reducers/AuthReducer';
 
-const Login = props => {
+const Login = () => {
   const email = useFormInput('');
   const password = useFormInput('');
 
-  const auth = useContext(AuthContext);
+  const { auth, dispatch } = useContext(AuthContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    await auth.loginUser({
+    // await auth.loginUser({
+    //   email: email.value,
+    //   password: password.value
+    // });
+    const userData = {
       email: email.value,
       password: password.value
-    });
+    };
+
+    // dispatch({ type: LOGIN_USER, payload: userData });
+    loginUser(dispatch, userData);
   }
 
   if (auth.isAuthenticated && auth.company) {
