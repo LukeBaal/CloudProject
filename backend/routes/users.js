@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
 const passport = require('passport');
+const axios = require('axios');
 
 const User = require('../models/User');
 
@@ -210,10 +211,58 @@ router.get(
   }
 );
 
-// Logout Handle
+//@route GET /logout
+//@desc Logout Handle
+//@access Private
 router.get('/logout', (req, res) => {
   req.logout();
   res.status(200).json({ msg: 'You have been logged out' });
 });
+
+//@route GET /:id
+//@desc Get user's details (Assuming permissions allow)
+//@access Private
+router.get(
+  '/:pairKey',
+  passport.authenticate('jwt', {
+    session: false
+  }),
+  async (req, res) => {
+    // Get permissions
+    const { pairKey } = req.params;
+    const params = {
+      where: {
+        pairKey
+      }
+    };
+    const URLParams = encodeURIComponent(JSON.stringify(params));
+    try {
+      const permissionsRes = await axios.get(
+        `http://localhost:3000/api/Permissions?filter=${URLParams}`
+      );
+
+      // Fetch user data
+      const user = await User.findOne({ pairKeys: pairKey });
+
+      if (!user) {
+        res.status(404).json({ Error: 'No user with that pair key' });
+      }
+
+      const { name, email, phone, address, age } = permissionsRes.data[0];
+      const userData = {
+        name: name ? `${user.firstname} ${user.lastname}` : 'Unknown',
+        email: email ? user.email : 'Unknown',
+        phone: phone ? user.phone : 'Unknown',
+        address: address ? user.address : 'Unknown',
+        age: age ? user.age : 'Unknown'
+      };
+
+      res.status(200).json(userData);
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({ Error: 'Error fetching user data' });
+    }
+  }
+);
 
 module.exports = router;

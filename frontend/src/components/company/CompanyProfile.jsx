@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../contexts/AuthContext';
 import axios from 'axios';
-import Permissions from '../permissions/Permissions';
+import CompanyPermissions from './CompanyPermissions';
 
 const CompanyProfile = () => {
   const auth = useContext(AuthContext);
@@ -44,10 +44,9 @@ const CompanyProfile = () => {
         <h3 className="card-title">{auth.company.name}</h3>
         <ul className="list-group">
           {permissions.map(permissionsItem => (
-            <Permissions
+            <CompanyPermissions
               key={permissionsItem}
               permissions={permissionsItem}
-              showCompanyId={false}
             />
           ))}
         </ul>
