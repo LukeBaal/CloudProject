@@ -29,9 +29,8 @@ class App extends Component {
         user: null,
         company: null,
         loginUser: this.loginUser,
-        logoutUser: this.logoutUser,
+        logout: this.logout,
         loginCompany: this.loginCompany,
-        logoutCompany: this.logoutCompany,
         setUser: this.setUser
       },
       companies: []
@@ -72,9 +71,10 @@ class App extends Component {
     }
   };
 
-  logoutUser = () => {
-    // Log user out
+  logout = () => {
+    // Log user/company out
     localStorage.removeItem('jwtToken');
+    localStorage.removeItem('jwtTokenCompany');
     setAuthToken('');
     this.setState({
       auth: {
@@ -96,10 +96,9 @@ class App extends Component {
       // Set token to Auth header
       setAuthToken(token);
       const decoded = jwt_decode(token);
-      console.log('Setting auth state');
       this.setState({
         auth: {
-          ...this.state.companyAuth,
+          ...this.state.auth,
           isAuthenticated: true,
           company: decoded
         }
@@ -109,19 +108,6 @@ class App extends Component {
     }
   };
 
-  logoutCompany = () => {
-    // Log user out
-    localStorage.removeItem('jwtTokenCompany');
-    setAuthToken('');
-    this.setState({
-      auth: {
-        ...this.state.companyAuth,
-        isAuthenticated: false,
-        company: null
-      }
-    });
-  };
-
   async componentDidMount() {
     if (localStorage.jwtToken) {
       setAuthToken(localStorage.jwtToken);
@@ -129,7 +115,6 @@ class App extends Component {
 
       const res = await axios.get('http://localhost:3000/api/company');
 
-      console.log('Setting user');
       this.setState({
         companies: res.data,
         auth: {

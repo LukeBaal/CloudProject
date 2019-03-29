@@ -23,14 +23,6 @@ const Navbar = () => {
   );
   const [links, setLinks] = useState(guestLinks);
 
-  function handleLogout() {
-    auth.logoutUser();
-  }
-
-  function handleCompanyLogout() {
-    auth.logoutCompany();
-  }
-
   useEffect(() => {
     if (auth.isAuthenticated && auth.user) {
       setLinks(
@@ -44,7 +36,7 @@ const Navbar = () => {
           <button
             className="nav-item nav-link btn btn-flat"
             to="/login"
-            onClick={handleLogout}
+            onClick={auth.logout}
           >
             Logout
           </button>
@@ -59,7 +51,7 @@ const Navbar = () => {
           <button
             className="nav-item nav-link btn btn-flat"
             to="/company/login"
-            onClick={handleCompanyLogout}
+            onClick={auth.logout}
           >
             Logout
           </button>
@@ -73,7 +65,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <Link className="navbar-brand" to="/">
-        Consensus Manager
+        Consent Manager
       </Link>
       <button
         className="navbar-toggler"

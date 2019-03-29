@@ -250,11 +250,11 @@ router.get(
 
       const { name, email, phone, address, age } = permissionsRes.data[0];
       const userData = {
-        name: name ? `${user.firstname} ${user.lastname}` : 'Unknown',
-        email: email ? user.email : 'Unknown',
-        phone: phone ? user.phone : 'Unknown',
-        address: address ? user.address : 'Unknown',
-        age: age ? user.age : 'Unknown'
+        name: name ? `${user.firstname} ${user.lastname}` : false,
+        email: email ? user.email : false,
+        phone: phone ? user.phone : false,
+        address: address ? user.address : false,
+        age: age ? user.age : false
       };
 
       res.status(200).json(userData);
