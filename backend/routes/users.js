@@ -246,6 +246,7 @@ router.get(
 
       if (!user) {
         res.status(404).json({ Error: 'No user with that pair key' });
+        return;
       }
 
       const { name, email, phone, address, age } = permissionsRes.data[0];

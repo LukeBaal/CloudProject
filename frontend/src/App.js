@@ -14,10 +14,11 @@ import AddPermissions from './components/permissions/AddPermissions';
 import EditPermissions from './components/permissions/EditPermissions';
 import Landing from './components/common/Landing';
 import Profile from './components/user/Profile';
-import CompanyProfile from './components/company/CompanyProfile';
 import AuthContext from './contexts/AuthContext';
 import CompanyContext from './contexts/CompanyContext';
 import setAuthToken from './utils/setAuthToken';
+import CompanyProfileContainer from './components/company/CompanyProfileContainer';
+import CompanyAddProfile from './components/company/CompanyAddProfile';
 
 class App extends Component {
   constructor(props) {
@@ -187,7 +188,12 @@ class App extends Component {
                 <CompanyPrivateRoute
                   exact
                   path="/company/profile"
-                  component={CompanyProfile}
+                  component={CompanyProfileContainer}
+                />
+                <CompanyPrivateRoute
+                  exact
+                  path="/company/profile/add"
+                  component={CompanyAddProfile}
                 />
                 <PrivateRoute
                   exact

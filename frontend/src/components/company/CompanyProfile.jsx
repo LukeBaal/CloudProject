@@ -1,35 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../contexts/AuthContext';
 import axios from 'axios';
+
 import CompanyPermissions from './CompanyPermissions';
 
-const CompanyProfile = () => {
+const CompanyProfile = ({ companyId }) => {
   const auth = useContext(AuthContext);
   const [permissions, setPermissions] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      // Get company entry in hyperleder
-      let params = {
-        where: {
-          name: auth.company.name
-        }
-      };
-      let URLParams = encodeURIComponent(JSON.stringify(params));
-      let res = await axios.get(
-        `http://localhost:3000/api/company?filter=${URLParams}`
-      );
-
       // Get Permissions for company
-      params = {
+      const params = {
         where: {
-          company: `resource:ca.uoit.consensusnetwork.Company#${
-            res.data[0].companyId
-          }`
+          company: `resource:ca.uoit.consensusnetwork.Company#${companyId}`
         }
       };
-      URLParams = encodeURIComponent(JSON.stringify(params));
-      res = await axios.get(
+      const URLParams = encodeURIComponent(JSON.stringify(params));
+      const res = await axios.get(
         `http://localhost:3000/api/permissions?filter=${URLParams}`
       );
 
@@ -43,12 +31,16 @@ const CompanyProfile = () => {
       <div className="card-body">
         <h3 className="card-title">{auth.company.name}</h3>
         <ul className="list-group">
-          {permissions.map(permissionsItem => (
-            <CompanyPermissions
-              key={permissionsItem}
-              permissions={permissionsItem}
-            />
-          ))}
+          {permissions.length > 0 ? (
+            permissions.map(permissionsItem => (
+              <CompanyPermissions
+                key={permissionsItem.pairKey}
+                permissions={permissionsItem}
+              />
+            ))
+          ) : (
+            <h5>No Entries</h5>
+          )}
         </ul>
       </div>
     </div>

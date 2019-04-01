@@ -11,7 +11,29 @@ const DeleteUser = () => {
     if (confirmInput.value === 'DELETE') {
       // Change user permissions to be all false
       try {
-        const res = await axios.get('http://localhost:3000/api/permissions');
+        const userRes = await axios.get('/api/users/current');
+        const { pairKeys } = userRes.data.user;
+
+        const params = {};
+        if (pairKeys.length >= 2) {
+          params.where = {
+            or: pairKeys.map(pairKey => ({ pairKey }))
+          };
+        } else if (pairKeys.length === 1) {
+          params.where = {
+            pairKey: pairKeys[0]
+          };
+        } else {
+          params.where = {
+            pairKey: ''
+          };
+        }
+
+        const URLParams = encodeURIComponent(JSON.stringify(params));
+        const res = await axios.get(
+          `http://localhost:3000/api/permissions?filter=${URLParams}`
+        );
+
         const permissions = res.data;
         await permissions.forEach(async permissionsItem => {
           const newPermissions = {
@@ -33,7 +55,7 @@ const DeleteUser = () => {
         await axios.delete('/api/users');
 
         // Logout the user
-        auth.logoutUser();
+        auth.logout();
       } catch (e) {
         console.log(e);
       }
@@ -104,6 +126,7 @@ const DeleteUser = () => {
                 <button
                   type="button"
                   className="btn btn-danger"
+                  data-dismiss="modal"
                   onClick={handleDeleteClick}
                 >
                   Confirm
