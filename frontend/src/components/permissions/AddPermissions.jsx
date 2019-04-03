@@ -1,13 +1,11 @@
 import axios from 'axios';
 import crypto from 'crypto';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import AuthContext from '../../contexts/AuthContext';
-import CompanyContext from '../../contexts/CompanyContext';
 import useCheckInput from '../../effects/useCheckInput';
 import useFormInput from '../../effects/useFormInput';
 
 const AddPermissions = props => {
-  const companies = useContext(CompanyContext);
   const auth = useContext(AuthContext);
 
   const companySelect = useFormInput(-1);
@@ -17,7 +15,14 @@ const AddPermissions = props => {
   const address = useCheckInput(false);
   const age = useCheckInput(false);
 
+  const [companies, setCompanies] = useState([]);
   const [submitBtnText, setSubmitBtnText] = useState('Submit');
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/api/Company').then(res => {
+      setCompanies(res.data);
+    });
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();

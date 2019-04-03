@@ -2,3 +2,4 @@
 **/*.bna
 **/envvars.txt
 **/keys.js
+**/build

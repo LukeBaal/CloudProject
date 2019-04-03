@@ -15,7 +15,6 @@ import EditPermissions from './components/permissions/EditPermissions';
 import Landing from './components/common/Landing';
 import Profile from './components/user/Profile';
 import AuthContext from './contexts/AuthContext';
-import CompanyContext from './contexts/CompanyContext';
 import setAuthToken from './utils/setAuthToken';
 import CompanyProfileContainer from './components/company/CompanyProfileContainer';
 import CompanyAddProfile from './components/company/CompanyAddProfile';
@@ -33,8 +32,7 @@ class App extends Component {
         logout: this.logout,
         loginCompany: this.loginCompany,
         setUser: this.setUser
-      },
-      companies: []
+      }
     };
   }
 
@@ -114,10 +112,7 @@ class App extends Component {
       setAuthToken(localStorage.jwtToken);
       const decoded = jwt_decode(localStorage.jwtToken);
 
-      const res = await axios.get('http://localhost:3000/api/company');
-
       this.setState({
-        companies: res.data,
         auth: {
           ...this.state.auth,
           isAuthenticated: true,
@@ -140,8 +135,6 @@ class App extends Component {
     } else if (localStorage.jwtTokenCompany) {
       setAuthToken(localStorage.jwtTokenCompany);
       const decoded = jwt_decode(localStorage.jwtTokenCompany);
-
-      console.log('Setting company');
 
       this.setState({
         auth: {
@@ -169,51 +162,49 @@ class App extends Component {
   render() {
     return (
       <AuthContext.Provider value={this.state.auth}>
-        <CompanyContext.Provider value={this.state.companies}>
-          <Router>
-            <Navbar />
-            <div className="container mt-3">
-              <Switch>
-                <Route exact path="/" component={Landing} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/login" component={Login} />
+        <Router>
+          <Navbar />
+          <div className="container mt-3">
+            <Switch>
+              <Route exact path="/" component={Landing} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
 
-                <Route
-                  exact
-                  path="/company/register"
-                  component={CompanyRegister}
-                />
-                <Route exact path="/company/login" component={CompanyLogin} />
-                <PrivateRoute exact path="/profile" component={Profile} />
-                <CompanyPrivateRoute
-                  exact
-                  path="/company/profile"
-                  component={CompanyProfileContainer}
-                />
-                <CompanyPrivateRoute
-                  exact
-                  path="/company/profile/add"
-                  component={CompanyAddProfile}
-                />
-                <PrivateRoute
-                  exact
-                  path="/permissions/add"
-                  component={AddPermissions}
-                />
-                <PrivateRoute
-                  exact
-                  path="/permissions/edit"
-                  component={EditPermissions}
-                />
-                <PrivateRoute
-                  exact
-                  path="/companies"
-                  component={CompanyContainer}
-                />
-              </Switch>
-            </div>
-          </Router>
-        </CompanyContext.Provider>
+              <Route
+                exact
+                path="/company/register"
+                component={CompanyRegister}
+              />
+              <Route exact path="/company/login" component={CompanyLogin} />
+              <PrivateRoute exact path="/profile" component={Profile} />
+              <CompanyPrivateRoute
+                exact
+                path="/company/profile"
+                component={CompanyProfileContainer}
+              />
+              <CompanyPrivateRoute
+                exact
+                path="/company/profile/add"
+                component={CompanyAddProfile}
+              />
+              <PrivateRoute
+                exact
+                path="/permissions/add"
+                component={AddPermissions}
+              />
+              <PrivateRoute
+                exact
+                path="/permissions/edit"
+                component={EditPermissions}
+              />
+              <PrivateRoute
+                exact
+                path="/companies"
+                component={CompanyContainer}
+              />
+            </Switch>
+          </div>
+        </Router>
       </AuthContext.Provider>
     );
   }
