@@ -1,5 +1,4 @@
 **/node_modules
 **/*.bna
 **/envvars.txt
-**/keys.js
 **/build

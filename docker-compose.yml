@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      - consent-manager
+  web:
+    build: .
+    ports:
+      - 5000:5000
+      - 3000:3000
+    networks:
+      - consent-manager
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: production
+networks:
+  consent-manager:
