@@ -1,718 +1,281 @@
-%% bare_jrnl.tex
-%% V1.4b
-%% 2015/08/26
-%% by Michael Shell
-%% see http://www.michaelshell.org/
-%% for current contact information.
-%%
-%% This is a skeleton file demonstrating the use of IEEEtran.cls
-%% (requires IEEEtran.cls version 1.8b or later) with an IEEE
-%% journal paper.
-%%
-%% Support sites:
-%% http://www.michaelshell.org/tex/ieeetran/
-%% http://www.ctan.org/pkg/ieeetran
-%% and
-%% http://www.ieee.org/
+\documentclass[11pt,journal]{IEEEtran}
 
-%%*************************************************************************
-%% Legal Notice:
-%% This code is offered as-is without any warranty either expressed or
-%% implied; without even the implied warranty of MERCHANTABILITY or
-%% FITNESS FOR A PARTICULAR PURPOSE! 
-%% User assumes all risk.
-%% In no event shall the IEEE or any contributor to this code be liable for
-%% any damages or losses, including, but not limited to, incidental,
-%% consequential, or any other damages, resulting from the use or misuse
-%% of any information contained here.
-%%
-%% All comments are the opinions of their respective authors and are not
-%% necessarily endorsed by the IEEE.
-%%
-%% This work is distributed under the LaTeX Project Public License (LPPL)
-%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
-%% distributed and modified. A copy of the LPPL, version 1.3, is included
-%% in the base LaTeX documentation of all distributions of LaTeX released
-%% 2003/12/01 or later.
-%% Retain all contribution notices and credits.
-%% ** Modified files should be clearly indicated as such, including  **
-%% ** renaming them and changing author support contact information. **
-%%*************************************************************************
-
-
-% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
-% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
-% *** with production work. The IEEE's font choices and paper sizes can   ***
-% *** trigger bugs that do not appear when using other class files.       ***                          ***
-% The testflow support page is at:
-% http://www.michaelshell.org/tex/testflow/
-
-
-
-\documentclass[journal]{IEEEtran}
-%
-% If IEEEtran.cls has not been installed into the LaTeX system files,
-% manually specify the path to it like:
-% \documentclass[journal]{../sty/IEEEtran}
-
-
-
-
-
-% Some very useful LaTeX packages include:
-% (uncomment the ones you want to load)
-
-
-% *** MISC UTILITY PACKAGES ***
-%
-%\usepackage{ifpdf}
-% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
-% compilation based on whether the output is pdf or dvi.
-% usage:
-% \ifpdf
-%   % pdf code
-% \else
-%   % dvi code
-% \fi
-% The latest version of ifpdf.sty can be obtained from:
-% http://www.ctan.org/pkg/ifpdf
-% Also, note that IEEEtran.cls V1.7 and later provides a builtin
-% \ifCLASSINFOpdf conditional that works the same way.
-% When switching from latex to pdflatex and vice-versa, the compiler may
-% have to be run twice to clear warning/error messages.
-
-
-
-
-
-
-% *** CITATION PACKAGES ***
-%
+\usepackage{url}
 \usepackage{cite}
-% cite.sty was written by Donald Arseneau
-% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
-% \cite{} output to follow that of the IEEE. Loading the cite package will
-% result in citation numbers being automatically sorted and properly
-% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
-% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
-% \cite will automatically add leading space, if needed. Use cite.sty's
-% noadjust option (cite.sty V3.8 and later) if you want to turn this off
-% such as if a citation ever needs to be enclosed in parenthesis.
-% cite.sty is already installed on most LaTeX systems. Be sure and use
-% version 5.0 (2009-03-20) and later if using hyperref.sty.
-% The latest version can be obtained at:
-% http://www.ctan.org/pkg/cite
-% The documentation is contained in the cite.sty file itself.
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{array}
 
+\usepackage[pdftex]{graphicx}
+\graphicspath{{./pdf/}{./jpeg/}{./png/}}
+\DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 
-
-
-
-
-% *** GRAPHICS RELATED PACKAGES ***
-%
-\ifCLASSINFOpdf
-  % \usepackage[pdftex]{graphicx}
-  % declare the path(s) where your graphic files are
-  % \graphicspath{{../pdf/}{../jpeg/}}
-  % and their extensions so you won't have to specify these with
-  % every instance of \includegraphics
-  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\ifCLASSOPTIONcompsoc
+ \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
 \else
-  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
-  % will default to the driver specified in the system graphics.cfg if no
-  % driver is specified.
-  % \usepackage[dvips]{graphicx}
-  % declare the path(s) where your graphic files are
-  % \graphicspath{{../eps/}}
-  % and their extensions so you won't have to specify these with
-  % every instance of \includegraphics
-  % \DeclareGraphicsExtensions{.eps}
+ \usepackage[caption=false,font=footnotesize]{subfig}
 \fi
-% graphicx was written by David Carlisle and Sebastian Rahtz. It is
-% required if you want graphics, photos, etc. graphicx.sty is already
-% installed on most LaTeX systems. The latest version and documentation
-% can be obtained at: 
-% http://www.ctan.org/pkg/graphicx
-% Another good source of documentation is "Using Imported Graphics in
-% LaTeX2e" by Keith Reckdahl which can be found at:
-% http://www.ctan.org/pkg/epslatex
-%
-% latex, and pdflatex in dvi mode, support graphics in encapsulated
-% postscript (.eps) format. pdflatex in pdf mode supports graphics
-% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
-% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
-% not a bitmapped formats (.jpeg, .png). The IEEE frowns on bitmapped formats
-% which can result in "jaggedy"/blurry rendering of lines and letters as
-% well as large increases in file sizes.
-%
-% You can find documentation about the pdfTeX application at:
-% http://www.tug.org/applications/pdftex
 
-
-
-
-
-% *** MATH PACKAGES ***
-%
-%\usepackage{amsmath}
-% A popular package from the American Mathematical Society that provides
-% many useful and powerful commands for dealing with mathematics.
-%
-% Note that the amsmath package sets \interdisplaylinepenalty to 10000
-% thus preventing page breaks from occurring within multiline equations. Use:
-%\interdisplaylinepenalty=2500
-% after loading amsmath to restore such page breaks as IEEEtran.cls normally
-% does. amsmath.sty is already installed on most LaTeX systems. The latest
-% version and documentation can be obtained at:
-% http://www.ctan.org/pkg/amsmath
-
-
-
-
-
-% *** SPECIALIZED LIST PACKAGES ***
-%
-%\usepackage{algorithmic}
-% algorithmic.sty was written by Peter Williams and Rogerio Brito.
-% This package provides an algorithmic environment fo describing algorithms.
-% You can use the algorithmic environment in-text or within a figure
-% environment to provide for a floating algorithm. Do NOT use the algorithm
-% floating environment provided by algorithm.sty (by the same authors) or
-% algorithm2e.sty (by Christophe Fiorio) as the IEEE does not use dedicated
-% algorithm float types and packages that provide these will not provide
-% correct IEEE style captions. The latest version and documentation of
-% algorithmic.sty can be obtained at:
-% http://www.ctan.org/pkg/algorithms
-% Also of interest may be the (relatively newer and more customizable)
-% algorithmicx.sty package by Szasz Janos:
-% http://www.ctan.org/pkg/algorithmicx
-
-
-
-
-% *** ALIGNMENT PACKAGES ***
-%
-%\usepackage{array}
-% Frank Mittelbach's and David Carlisle's array.sty patches and improves
-% the standard LaTeX2e array and tabular environments to provide better
-% appearance and additional user controls. As the default LaTeX2e table
-% generation code is lacking to the point of almost being broken with
-% respect to the quality of the end results, all users are strongly
-% advised to use an enhanced (at the very least that provided by array.sty)
-% set of table tools. array.sty is already installed on most systems. The
-% latest version and documentation can be obtained at:
-% http://www.ctan.org/pkg/array
-
-
-% IEEEtran contains the IEEEeqnarray family of commands that can be used to
-% generate multiline equations as well as matrices, tables, etc., of high
-% quality.
-
-
-
-
-% *** SUBFIGURE PACKAGES ***
-%\ifCLASSOPTIONcompsoc
-%  \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
-%\else
-%  \usepackage[caption=false,font=footnotesize]{subfig}
-%\fi
-% subfig.sty, written by Steven Douglas Cochran, is the modern replacement
-% for subfigure.sty, the latter of which is no longer maintained and is
-% incompatible with some LaTeX packages including fixltx2e. However,
-% subfig.sty requires and automatically loads Axel Sommerfeldt's caption.sty
-% which will override IEEEtran.cls' handling of captions and this will result
-% in non-IEEE style figure/table captions. To prevent this problem, be sure
-% and invoke subfig.sty's "caption=false" package option (available since
-% subfig.sty version 1.3, 2005/06/28) as this is will preserve IEEEtran.cls
-% handling of captions.
-% Note that the Computer Society format requires a larger sans serif font
-% than the serif footnote size font used in traditional IEEE formatting
-% and thus the need to invoke different subfig.sty package options depending
-% on whether compsoc mode has been enabled.
-%
-% The latest version and documentation of subfig.sty can be obtained at:
-% http://www.ctan.org/pkg/subfig
-
-
-
-
-% *** FLOAT PACKAGES ***
-%
-%\usepackage{fixltx2e}
-% fixltx2e, the successor to the earlier fix2col.sty, was written by
-% Frank Mittelbach and David Carlisle. This package corrects a few problems
-% in the LaTeX2e kernel, the most notable of which is that in current
-% LaTeX2e releases, the ordering of single and double column floats is not
-% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
-% single column figure to be placed prior to an earlier double column
-% figure.
-% Be aware that LaTeX2e kernels dated 2015 and later have fixltx2e.sty's
-% corrections already built into the system in which case a warning will
-% be issued if an attempt is made to load fixltx2e.sty as it is no longer
-% needed.
-% The latest version and documentation can be found at:
-% http://www.ctan.org/pkg/fixltx2e
-
-
-%\usepackage{stfloats}
-% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
-% the ability to do double column floats at the bottom of the page as well
-% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
-% LaTeX2e). It also provides a command:
-%\fnbelowfloat
-% to enable the placement of footnotes below bottom floats (the standard
-% LaTeX2e kernel puts them above bottom floats). This is an invasive package
-% which rewrites many portions of the LaTeX2e float routines. It may not work
-% with other packages that modify the LaTeX2e float routines. The latest
-% version and documentation can be obtained at:
-% http://www.ctan.org/pkg/stfloats
-% Do not use the stfloats baselinefloat ability as the IEEE does not allow
-% \baselineskip to stretch. Authors submitting work to the IEEE should note
-% that the IEEE rarely uses double column equations and that authors should try
-% to avoid such use. Do not be tempted to use the cuted.sty or midfloat.sty
-% packages (also by Sigitas Tolusis) as the IEEE does not format its papers in
-% such ways.
-% Do not attempt to use stfloats with fixltx2e as they are incompatible.
-% Instead, use Morten Hogholm'a dblfloatfix which combines the features
-% of both fixltx2e and stfloats:
-%
-% \usepackage{dblfloatfix}
-% The latest version can be found at:
-% http://www.ctan.org/pkg/dblfloatfix
-
-
-
-
-%\ifCLASSOPTIONcaptionsoff
-%  \usepackage[nomarkers]{endfloat}
-% \let\MYoriglatexcaption\caption
-% \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
-%\fi
-% endfloat.sty was written by James Darrell McCauley, Jeff Goldberg and 
-% Axel Sommerfeldt. This package may be useful when used in conjunction with 
-% IEEEtran.cls'  captionsoff option. Some IEEE journals/societies require that
-% submissions have lists of figures/tables at the end of the paper and that
-% figures/tables without any captions are placed on a page by themselves at
-% the end of the document. If needed, the draftcls IEEEtran class option or
-% \CLASSINPUTbaselinestretch interface can be used to increase the line
-% spacing as well. Be sure and use the nomarkers option of endfloat to
-% prevent endfloat from "marking" where the figures would have been placed
-% in the text. The two hack lines of code above are a slight modification of
-% that suggested by in the endfloat docs (section 8.4.1) to ensure that
-% the full captions always appear in the list of figures/tables - even if
-% the user used the short optional argument of \caption[]{}.
-% IEEE papers do not typically make use of \caption[]'s optional argument,
-% so this should not be an issue. A similar trick can be used to disable
-% captions of packages such as subfig.sty that lack options to turn off
-% the subcaptions:
-% For subfig.sty:
-% \let\MYorigsubfloat\subfloat
-% \renewcommand{\subfloat}[2][\relax]{\MYorigsubfloat[]{#2}}
-% However, the above trick will not work if both optional arguments of
-% the \subfloat command are used. Furthermore, there needs to be a
-% description of each subfigure *somewhere* and endfloat does not add
-% subfigure captions to its list of figures. Thus, the best approach is to
-% avoid the use of subfigure captions (many IEEE journals avoid them anyway)
-% and instead reference/explain all the subfigures within the main caption.
-% The latest version of endfloat.sty and its documentation can obtained at:
-% http://www.ctan.org/pkg/endfloat
-%
-% The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
-% later in the document, say, to conditionally put the References on a 
-% page by themselves.
-
-
-
-
-% *** PDF, URL AND HYPERLINK PACKAGES ***
-%
-%\usepackage{url}
-% url.sty was written by Donald Arseneau. It provides better support for
-% handling and breaking URLs. url.sty is already installed on most LaTeX
-% systems. The latest version and documentation can be obtained at:
-% http://www.ctan.org/pkg/url
-% Basically, \url{my_url_here}.
-
-
-
-
-% *** Do not adjust lengths that control margins, column widths, etc. ***
-% *** Do not use packages that alter fonts (such as pslatex).         ***
-% There should be no need to do such things with IEEEtran.cls V1.6 and later.
-% (Unless specifically asked to do so by the journal or conference you plan
-% to submit to, of course. )
-
-
-% correct bad hyphenation here
-\hyphenation{op-tical net-works semi-conduc-tor}
-
+\makeatletter
+\newcommand\fs@norules{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled
+  \def\@fs@pre{}%
+  \def\@fs@post{}%
+  \def\@fs@mid{\kern3pt}%
+  \let\@fs@iftopcapt\iftrue}
+\makeatother
+\floatstyle{norules}
+\restylefloat{algorithm}
+\setlength{\columnsep}{0.3in}
 
 \begin{document}
-%
-% paper title
-% Titles are generally capitalized except for words such as a, an, and, as,
-% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
-% not capitalized unless they are the first or last word of the title.
-% Linebreaks \\ can be used within to get better formatting as desired.
-% Do not put math or special symbols in the title.
-\title{Bare Demo of IEEEtran.cls\\ for IEEE Journals}
-%
-%
-% author names and IEEE memberships
-% note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
-% a structure at a ~ so this keeps an author's name from being broken across
-% two lines.
-% use \thanks{} to gain access to the first footnote area
-% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
-% was not built to handle multiple paragraphs
-%
+\title{Consent Management Using Blockchain}
+\author{Nathaniel~Aldred, 
+        Luke~Baal,
+        Graeham~Broda,
+        Steven~Trumble}
 
-\author{Michael~Shell,~\IEEEmembership{Member,~IEEE,}
-        John~Doe,~\IEEEmembership{Fellow,~OSA,}
-        and~Jane~Doe,~\IEEEmembership{Life~Fellow,~IEEE}% <-this % stops a space
-\thanks{M. Shell was with the Department
-of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
-GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this % stops a space
-\thanks{J. Doe and J. Doe are with Anonymous University.}% <-this % stops a space
-\thanks{Manuscript received April 19, 2005; revised August 26, 2015.}}
-
-% note the % following the last \IEEEmembership and also \thanks - 
-% these prevent an unwanted space from occurring between the last author name
-% and the end of the author line. i.e., if you had this:
-% 
-% \author{....lastname \thanks{...} \thanks{...} }
-%                     ^------------^------------^----Do not want these spaces!
-%
-% a space would be appended to the last name and could cause every name on that
-% line to be shifted left slightly. This is one of those "LaTeX things". For
-% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
-% "AB" then you have to do: "\textbf{A}\textbf{B}"
-% \thanks is no different in this regard, so shield the last } of each \thanks
-% that ends a line with a % and do not let a space in before the next \thanks.
-% Spaces after \IEEEmembership other than the last one are OK (and needed) as
-% you are supposed to have spaces between the names. For what it is worth,
-% this is a minor point as most people would not even notice if the said evil
-% space somehow managed to creep in.
-
-
-
-% The paper headers
-\markboth{Journal of \LaTeX\ Class Files,~Vol.~14, No.~8, August~2015}%
-{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for IEEE Journals}
-% The only time the second header will appear is for the odd numbered pages
-% after the title page when using the twoside option.
-% 
-% *** Note that you probably will NOT want to include the author's ***
-% *** name in the headers of peer review papers.                   ***
-% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
-% you desire.
-
-
-
-
-% If you want to put a publisher's ID mark on the page you can do it like
-% this:
-%\IEEEpubid{0000--0000/00\$00.00~\copyright~2015 IEEE}
-% Remember, if you use this you must call \IEEEpubidadjcol in the second
-% column for its text to clear the IEEEpubid mark.
-
-
-
-% use for special paper notices
-%\IEEEspecialpapernotice{(Invited Paper)}
-
-
-
-
-% make the title area
 \maketitle
 
-% As a general rule, do not put math, special symbols or citations
-% in the abstract or keywords.
 \begin{abstract}
-The abstract goes here.
+  With the rise and fall of bitcoin, blockchain as a technology has come to the front of leading developments within the cloud. However, currency is not the only possible application. With blockchains built-in security and removal of the need for third party trust, blockchain has started to see some use within contract applications among other things. We propose another use for blockchain which involves consent management and Hyperledger Fabric to provide a service that allows end-users of this proposed service to control and consent to who manages their all or a partial set of their sensitive information.
 \end{abstract}
 
-% Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-IEEE, IEEEtran, journal, \LaTeX, paper, template.
+  Blockchain, Consent Management, GDPR, Hyperledger, Privacy
 \end{IEEEkeywords}
 
-
-
-
-
-
-% For peer review papers, you can put extra information on the cover
-% page as needed:
-% \ifCLASSOPTIONpeerreview
-% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
-% \fi
-%
-% For peerreview papers, this IEEEtran command inserts a page break and
-% creates the second title. It will be ignored for other modes.
-\IEEEpeerreviewmaketitle
-
-
-
 \section{Introduction}
-% The very first letter is a 2 line initial drop letter followed
-% by the rest of the first word in caps.
-% 
-% form to use if the first word consists of a single letter:
-% \IEEEPARstart{A}{demo} file is ....
-% 
-% form to use if you need the single drop letter followed by
-% normal text (unknown if ever used by the IEEE):
-% \IEEEPARstart{A}{}demo file is ....
-% 
-% Some journals put the first two words in caps:
-% \IEEEPARstart{T}{his demo} file is ....
-% 
-% Here we have the typical use of a "T" for an initial drop letter
-% and "HIS" in caps to complete the first word.
-\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
-for IEEE journal papers produced under \LaTeX\ using
-IEEEtran.cls version 1.8b and later.
-% You must have at least 2 lines in the paragraph with the drop letter
-% (should never be an issue)
-I wish you the best of success.
-
-\hfill mds
- 
-\hfill August 26, 2015
-
-\subsection{Subsection Heading Here}
-Subsection text here.
-
-% needed in second column of first page if using \IEEEpubid
-%\IEEEpubidadjcol
-
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
+\IEEEPARstart{W}{ith} the introduction of the GDPR in europe, a large new set of restrictions and rules have been placed upon data usage and collection, with large penalties if a business fails to comply. The GDPR has greatly increased the scope of how all businesses that process EU citizens data are affected. Businesses must provide a clear description of what is involved in their consent agreements, as well as having an easy method of consent withdrawal. In consideration of a customers data rights, there are several subject rights.  In an attempt to summarize the rights described in the GDPR policy, we will list them and give a small description.  The first right, Notification of Breach, a company must notify customers as soon as a data breach were to happen.  Right to Access is the right that a customer must be notified if there data is being accessed for processing.  The Right to be Forgotten, is the customers right to revoke access of a company to their data.  The GDPR also promotes privacy by design which we will describe in more detail in the following paragraph.  Finally, the GDPR will have Data Protection Officers, a group of people who will ensure that companies are complying with the appropriate data policies \cite{KeyChang80:online}.
 
 
-% An example of a floating figure using the graphicx package.
-% Note that \label must occur AFTER (or within) \caption.
-% For figures, \caption should occur after the \includegraphics.
-% Note that IEEEtran v1.7 and later has special internal code that
-% is designed to preserve the operation of \label within \caption
-% even when the captionsoff option is in effect. However, because
-% of issues like this, it may be the safest practice to put all your
-% \label just after \caption rather than within \caption{}.
-%
-% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
-% option should be used if it is desired that the figures are to be
-% displayed while in draft mode.
-%
-%\begin{figure}[!t]
-%\centering
-%\includegraphics[width=2.5in]{myfigure}
-% where an .eps filename suffix will be assumed under latex, 
-% and a .pdf suffix will be assumed for pdflatex; or what has been declared
-% via \DeclareGraphicsExtensions.
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure}
+Even outside of the EU, there are many reasons why businesses would want to adopt these rules. In Canada, surveys have shown that it is a potential business advantage to leverage these rules to further protect private and secure data, such as the Office of the Privacy Commissioner of Canada [Canadian67:online]. Secure data can be defined in several ways. Any personal information relating to a customer is considered confidential and secure, so no one should be able to access it without permission. Information in this category includes, but is not limited to: Photographs and ip addresses, contact lists, voiceprint biometrics used in voice recognition apps, location information.  This information can be collected by a malicious entity, combining many pieces of info creates an overview and insight into a victims life. When rules are in place to protect this data, customers have been shown to feel significantly more confident in the company which has their data, and their capabilities to protect it. Some examples of rules in place to protect customers include app liability. App liability states that “Under Canada’s private sector privacy legislation, an organization is accountable for personal information that it collects, uses and discloses”, meaning that a business has a capital interest in treating customer information with care, and protecting it.
 
-% Note that the IEEE typically puts floats only at the top, even when this
-% results in a large percentage of a column being occupied by floats.
+All of these have large impacts on how software and data management systems are designed, as previously companies had no reason to get rid of data upon a users request.
+
+This leaves developers who would like to develop software using appropriate privacy policies, with several choices.  The first choice is to develop their own in house solution, developing their own privacy policy, and assuring customers that they are being upfront and honest in their dealings.  This solution may not be adequate for many customers, as there is no way to ensure the company is handling their data as they say.  The next option, would be to use a third party solution.  This solution would need to have its policies decided by a government organization, and companies wishing to participate would need to be accredited by this organization.  This would ensure that companies complied with the given policies, and that the policies could be made or altered by the elected party in accordance with the citizens wishes.
+
+This leads us to our next problem, the system enforcing these policies must open and transparent about its privacy practices, as outlined by the Office of the Privacy Commissioner of Canada.  Companies and users participating in this system will want to ensure that the history of  their transactions is immutable, yet remain private.  Blockchain seems like an excellent way to implement several of these features.  The Blockchain is an immutable ledger, that provides a history of transactions, but allows the details to remain private \cite{nakamoto2008bitcoin}.  It is a peer-to-peer network that removes the need of a third-party to authorize transactions.  This fulfills most of our requirements but does not allow for a governing body to set policy on these transactions.  In order to do this, we believe a permissioned blockchain with immediate finality \cite{cachin2016architecture} such as hyperledger-fabric is needed.
 
 
-% An example of a double column floating figure using two subfigures.
-% (The subfig.sty package must be loaded for this to work.)
-% The subfigure \label commands are set within each subfloat command,
-% and the \label for the overall figure must come after \caption.
-% \hfil is used as a separator to get equal spacing.
-% Watch out that the combined width of all the subfigures on a 
-% line do not exceed the text width or a line break will occur.
-%
-%\begin{figure*}[!t]
-%\centering
-%\subfloat[Case I]{\includegraphics[width=2.5in]{box}%
-%\label{fig_first_case}}
-%\hfil
-%\subfloat[Case II]{\includegraphics[width=2.5in]{box}%
-%\label{fig_second_case}}
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure*}
-%
-% Note that often IEEE papers with subfigures do not employ subfigure
-% captions (using the optional argument to \subfloat[]), but instead will
-% reference/describe all of them (a), (b), etc., within the main caption.
-% Be aware that for subfig.sty to generate the (a), (b), etc., subfigure
-% labels, the optional argument to \subfloat must be present. If a
-% subcaption is not desired, just leave its contents blank,
-% e.g., \subfloat[].
+In this paper we will be discussing the implementation of the second option: a third party consent management system, whose policy is decided by a government agency.  We will mostly be discussing the technical implementation of such a system, unless its implementation is directly affected by government policy.  In order to do so we will break this document into the following sections: Section \ref{sec:related}. Background and Related Work, we will go over what makes blockchain a good solution, what is hyperledger-fabric and what makes it necessary for our implementation, what are some related areas of research, and what are some similarly implemented systems and their use.  Section \ref{sec:solution}. Proposed Solution, where we will discuss the our design and implementation of our prototype.  This section will be broken down into the following subsections as follows: \ref{sec:assumptions} will be the assumptions made in our design, \ref{sec:arch} will be the architecture, \ref{sec:implement} is the implementation of our prototype, in section \ref{sec:scale} we will discuss the possible scalability of our solution, and finally in section \ref{sec:challenges} we will discuss some of the challenges we have faced in developing our prototype, and what we did to solve them.  In Section \ref{sec:eval}. Evaluation and Results, we will critically evaluate our solution, and discuss our results.  Finally, in Section \ref{sec:conclussion}. Conclusion and Future Work, we will discuss our accomplishment, and discuss possible future improvements and implementations.
 
 
-% An example of a floating table. Note that, for IEEE style tables, the
-% \caption command should come BEFORE the table and, given that table
-% captions serve much like titles, are usually capitalized except for words
-% such as a, an, and, as, at, but, by, for, in, nor, of, on, or, the, to
-% and up, which are usually not capitalized unless they are the first or
-% last word of the caption. Table text will default to \footnotesize as
-% the IEEE normally uses this smaller font for tables.
-% The \label must come after \caption as always.
-%
-%\begin{table}[!t]
-%% increase table row spacing, adjust to taste
-%\renewcommand{\arraystretch}{1.3}
-% if using array.sty, it might be a good idea to tweak the value of
-% \extrarowheight as needed to properly center the text within the cells
-%\caption{An Example of a Table}
-%\label{table_example}
-%\centering
-%% Some packages, such as MDW tools, offer better commands for making tables
-%% than the plain LaTeX2e tabular which is used here.
-%\begin{tabular}{|c||c|}
-%\hline
-%One & Two\\
-%\hline
-%Three & Four\\
-%\hline
-%\end{tabular}
-%\end{table}
+\section{Background and Related Work} \label{sec:related}
+
+\subsection{What makes blockchain a good solution?} 
+One of the main premises that blockchain is built on, is the fact that security built into it removes the need for the trust of a third party. The trust is placed upon a distributed set of actors which as the added benefit of also making it hard to traceback to a user from a permission record of theirs. This reduces the impact of trust since many of the actors have different interests making a malicious consent hard to coordinate. Also the immutability makes block a great solution for consent management as once a permission is granted it is recorded in the leger and becomes immutable, the way to revoke this permission is to add another record to the chain stating that it has been done so.  It is also possible to keep transactions anonymous, despite them being announced publicly.  The public keys can be kept private, and the public will only be able to see that there is a transaction, and will not know the who the user of the public key is \cite{nakamoto2008bitcoin}.
+
+\subsection{What is hyperledger-fabric?}
+Hyperledger is self coined, as a distributed ledger technology(DLT)\cite{WhyHyper54:online}.  It is a implementation of a modular blockchain architecture.  It provides many features that we find may be suitable for developing a possible implementation of a consent management systems.  Hyperledger-fabric provides an identity management system, which is to say they require every user to be authenticated to participate and transact on the blockchain.  This means that different levels of permissions can be applied to different users\cite{WhyHyper54:online}.  The extra level of permission management allows a centralized authority to allow certain users to transact with the blockchain in different ways.  For example a company may only be given read permission, and only users can manipulate the global state.  This may at first seem to go against the idea of blockchain, a peer to peer network.  However, if we look at the perspective of a government trying to regulate a privacy policy in order to protect their citizens rights, then a privacy policy that can be reinforced through code and developed by lawmakers, is an ideal solution. Additionally, due to the use of authentication, compute intensive consensus algorithms such as the proof-of-work concepts are not needed, which makes hyperledger a more scalable option.
 
 
-% Note that the IEEE does not put floats in the very first column
-% - or typically anywhere on the first page for that matter. Also,
-% in-text middle ("here") positioning is typically not used, but it
-% is allowed and encouraged for Computer Society conferences (but
-% not Computer Society journals). Most IEEE journals/conferences use
-% top floats exclusively. 
-% Note that, LaTeX2e, unlike IEEE journals/conferences, places
-% footnotes above bottom floats. This can be corrected via the
-% \fnbelowfloat command of the stfloats package.
+\subsection{What current research is being done?}
+Most of the current research is being done in the medical industry, as patients data is very lucrative in this field, and their rights must be protected.  Genestier et al \cite{genestier2017blockchain} developed an application for a distributed consent management in using patients info.  In this model, the user can give permission for 3rd party companies to collect information on the patient, whether this is the use of records, or real time monitoring of the patient.  This company used hyperledger for many of the same reasons as we did.  The second example of research being done is by Benchoufi et al \cite{benchoufi2017blockchain}\cite{benchoufi2017blockchain2} who have proposed using a blockchain solution in clinical trial research.  Apparently, there has been some trouble with ensuring stakeholders do not manipulate results, and ensuring that trial properly collect consent from trial members, and properly inform the members of any new information and renewal of product given in testing.  Finally Gammon \cite{gammon2018experimenting} wrote an article describing the benefits of consent management using blockchain, and some similar technologies that already exist, which we will got into detail in the following section. 
+
+\subsection{What similar products already exist?}
+Most of these products that will be mentioned in this section are based off of the value of medical data \cite{gammon2018experimenting}.  In longenesis \cite{Longenes50:online}, they use a decentralized system to provide a medical record marketplace.  Selling your data is essentially exchanging value on the blockchain, which is what the blockchain excels at.  Nebula Genomics \cite{Howitwor19:online}, is under a similar branch, as they will purchase a users entire genome, especially if the patient has unique health conditions.  A system, MedRec \cite{MedRec35:online} that more aligns with Genestier et al’s \cite{genestier2017blockchain} design, and is used for sharing medical records.  Estonian e-health has also already implemented a blockchain system giving patients access control of their data \cite{gammon2018experimenting}.
 
 
+\section{Proposed Solution} \label{sec:solution}
+
+\subsection{Assumptions} \label{sec:assumptions}
+The major assumption made is that our technology will be supported by a trusted organization.  For example, ISO/PC 317 \cite{ISOPC31742:online} Consumer protection: privacy by design for consumer goods and services, could provide an accreditation for a privacy policy management system.  This accreditation would be similar to ISO 9001:20015 \cite{ISO9001228:online} which requires an organization to meet several quality requirements.  Using this accreditation system and hyperledger-fabrics permission based system, we could require that companies wishing to participate in our blockchain are accredited.  Our policy would need to include several requirements from the companies participating.  Companies would need to comply with any updates to user permissions, ie if a user were to revoke access their phone number the company would need to delete it from their internal database.  Or even better yet, the company would only every access the data on our database, updating the ledger in a request for a key, thereby alerting the user that their data is being accessed.  Once a company has accessed a users data, they would be able to keep it forever.  A development of a good privacy policy would entail the particulars of how that data is handled, and how to hold a company liable for it.  This includes any breaches to the users data, and would motivate companies to leave the storage of data to the centralized database of our server.  We are also under the assumption that user’s would not want their permission settings to be public to other companies.  This means that given a permission asset, it must be impossible to determine what user that belongs to.  The final assumption that we make, is that companies are not concerned with being connected to permission item, thereby reducing computational complexity.
+
+\subsection{Architecture} \label{sec:arch}
+
+The overall Architecture of our solution can be described as having three main components: The blockchain network, the REST API consortium(composer REST API, our REST API, and frontend), and the external database.  Figure \ref{fig:CurrentArch} describes the  current architecture of our application.  As the reader can see, both the user and the companies need to register on the front end.  The front end handles all the requests to Hyperledger, and all requests for data from the backend.  These interactions will be described in more detail in the following subsections.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=2.5in]{current_arch}
+  \caption{System Architecture}
+  \label{fig:CurrentArch}
+\end{figure}
+
+\subsubsection{Blockchain Network}
+
+Hyperledger Fabric, which is the underlying blockchain is configured and managed by Hyperledger composer \cite{WhyHyper54:online}\cite{Composer:online}. Some configuration of Fabric is not done by composer and this is the network architecture. This is in regards to the organization, orderer, peer, and CouchDB modules. To handle this configuration, a basic sample network was used as it fills the needs of the prototype. The fabric network used is illustrated in \cite[Fig. \ref{fig:FabricNetwork}]{WhyHyper54:online}. It involves one organization, which is responsible for the management of the blockchain network, which is used by Composer. It also uses one orderer node, which is responsible for the creation of the blocks that get put on the blockchain, this is abstracted from the peer nodes in order to improve performance \cite{Composer:online}. The network also features one peer node, which is what hosts the ledger (ie. the blockchain). Finally a CouchDB node is used as the datastore in order to manage data and allow data persistence.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=2.5in]{fabric_network}
+  \caption{Hyperledger Fabric Basic Network}
+  \label{fig:FabricNetwork}
+\end{figure}
+
+\subsubsection{Composer REST API, Our REST API, and Frontend}
+
+In order to perform operations on the network or to just query data, Hyperledger Composer allows for the generation of a REST API to handle requests \cite{Composer:online}. For simplicity, the REST API uses an Admin credential card with full access to the network to perform requests. The idea being to use an external server/application as a gateway to this REST API. Our own REST API was developed in order to make use of the database (described later) and to facilitate authentication for the frontend. Finally a frontend was developed to allow users to register/login and add/edit permissions as well as view companies. Companies can also register/login to the frontend to view the data they have been given permission to see.
+
+\subsubsection{External Database}
+
+Another key issue, as previously mentioned, is implementing the “Right to be forgotten” within a blockchain system. The actual blockchain within Fabric is an immutable ledger, this means all versions of every asset are always going to be in the blockchain, with the most up-to-date versions being in the global state of Fabric \cite{WhyHyper54:online}. This means storing the user's info in the blockchain is not viable, since once it was added, it could never be deleted, and might be visible to unauthorized parties. To solve this, a separate database is used to store the actual user info, which is why the permissions assets in the blockchain use boolean flags instead of the real info. A Mongo database was used as the database \cite{Mongo:online}. This database also generates a unique ID for each user entry, which is the user ID used to make pair key hashes described earlier. 
+
+\subsection{Implmentation} \label{sec:implement}
+\subsubsection{Hyperledger Composer}
+The first question needing to be answered to implement this system was what should and should not be stored in the blockchain. As mentioned in our assumptions, users should not be able to be traced from their permissions, nor should companies be able to trace users they have to the permissions said users have set for other companies. It is still required, however, to be able to link users to their permissions entries, but only to authorized parties. Hyperledger Fabric allows for data to be represented as key-value pairs \cite{WhyHyper54:online}. Assets are therefore required to be identified by a reference field, which will act as the key. For the permissions assets, the reference field is a hash of the user’s ID and the company’s ID. The origins of these respective IDs will be described later. The assets also have a reference to the company they are associated with, which allows for the companies info to be retrieved upon querying the permissions, rather than just getting the company’s ID and requiring a second query to get the name of the company. The remaining fields of the permissions assets are boolean flags which indicate whether the company is allowed access to the respective information. For example “email: false, name: true”, indicates the company is allowed access to the user’s name, but not their email address. The full permissions asset schema is presented in [Tab. \ref{tab:PermissionsSchema}]. The other kind of data in the blockchain network are companies. It is assumed companies want their info to be readily available, so it was put into the blockchain, which better allows permissions to be linked to them. A company entry is simply some arbitrary info fields designed to inform the user about the company, as well as a unique ID, which is implemented with uuid version 4. This unique ID is the company ID used in the pair key for the permissions assets. The full company schema is presented in [Tab. \ref{tab:CompanySchema}]. 
+
+\begin{table}[H]
+  \renewcommand{\arraystretch}{1.3}
+  \caption{Permissions Asset Schema}
+  \label{tab:PermissionsSchema}
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    Field & Data Type\\
+    \hline    
+    Pair Key & string \\
+    company & string \\
+    name & boolean \\
+    email & boolean \\
+    phone & boolean \\
+    address & boolean \\
+    age & boolean \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \renewcommand{\arraystretch}{1.3}
+  \caption{Company Participant Schema}
+  \label{tab:CompanySchema}
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    Field & Data Type\\
+    \hline
+    companyId & string \\
+    name & string \\
+    description & string \\
+    address & string \\
+    phone & string \\
+    email & string \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsubsection{Database, REST API, Frontend}
+
+The database is responsible for storing the login information, which is the users email or the companies name, as well as the password hash (plus a salt) of the user/company. Our REST API is then used to interact with this database. The REST API is responsible for handling user/company registration and login. Users enter their info on registration to have it added to the database. The info they enter follows the schema described in table \ref{tab:UserSchema}. Companies, upon registering, only need to give their company name and a password, which is described in table \ref{tab:CompanyDBSchema}. Once they have logged in after registering, they are prompted to enter their company info, which, along with their company name, is added to Hyperledger. Once a user logins, they can view the list of companies in the system, so they can better identify the companies they want to give permissions to. They can then add permissions setting for a given company, as well as edit existing ones. Finally, users can also delete their account, which sets all permission settings to all be false, deletes their info from the database, and then logs the user out. It is worth noting the user warning and is prompted to type “DELETE” and click confirm before any deletion occurs. The Hyperledger Composer REST API does allow for delete requests, however, we opted for setting all permissions to false, for two reasons. Firstly, the underlying blockchain will always have the history of the permission settings, so true deletion is not possible. Secondly, companies would have to recognize that permission entries were deleted in order to determine which set of info to delete. By setting all permissions to false, a message can be given to the companies telling them that the entry with the given pair key has been deleted, so they recognize that they must delete the information they have with that pair key. In order for companies to see the data they have access to, first the frontend sends a request to the REST API. The REST API then queries the Composer REST API for all permissions assets that have the same company ID as the currently authenticated company. The REST API uses the permission flags to determine what user info the get from the database and to send back to the frontend. Upon receiving the information, the frontend then renders each permission entry separately. The pair keys can be used by the companies to identify the individual entries.  
+
+\begin{table}
+  \renewcommand{\arraystretch}{1.3}
+  \caption{User Schema}
+  \label{tab:UserSchema}
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    Field & Data Type\\
+    \hline
+    id & string \\
+    name & string \\
+    email & string \\
+    password & string \\
+    address & string \\
+    phone & string \\
+    age & number \\
+    pairkeys & string array \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}
+  \renewcommand{\arraystretch}{1.3}
+  \caption{Company Database Schema}
+  \label{tab:CompanyDBSchema}
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    Field & Data Type\\
+    \hline
+    id & string \\
+    name & string \\
+    password & string \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsection{Scalability} \label{sec:scale}
+
+\subsubsection{Hyperledger Fabric}
+
+The underlying blockchain software used, Hyperledger, allow our program to be highly scalable. Hyperledger Fabric, which is the actual blockchain system, operates using several docker containers \cite{WhyHyper54:online}. Furthermore, having more peers improves the availability, given each peer hosts an instance of both the ledger and any chain code. This availability, however, is limited to querying. Any updates to the ledger require all peers to reach consensus to ensure the transaction is valid. Adding more peers, therefore, will slow down updates, however, it is also making it harder for the network to be fooled by a malicious user and prevents the system from having a single point of failure \cite{WhyHyper54:online}.
+
+\subsubsection{Hyperledger Composer REST Server}
+
+The REST server generated by Composer can also be used as a Docker container. Being a REST API, the server can simply be duplicated and have multiple instances of itself running to handle more requests. A common way to do this efficiently would be to use either Docker swarm \cite{DockerSwarm:online} of Kubernetes \cite{K8s:online}. Likewise, our REST API can be similarly scaled using Docker swarm or Kubernetes. The frontend can also be served by our REST API, allowing it to have more availability too. 
 
 
-\section{Conclusion}
-The conclusion goes here. \cite{IEEEexample:IEEEwebsite}
+\subsection{Challenges and Solutions} \label{sec:challenges}
 
-Some more stuff \cite{IEEEexample:bibtexuser}
-
+There were many challenges in developing this solution, which mainly fell in to three main categories:  overhead of learning concepts and technology related to blockchain, technical issues dealing with the various implementations of that technology, using the previous two challenges as constraints and still solving our original objective.  The solution to the first challenge was just due diligence on our part.  We researched any problems or misunderstandings we had in order to fill out our understanding of the subject.  For example, if all transactions are transparent, how will a user remain private?  It turns out this can easily be done by keeping the public key anonymous \cite{nakamoto2008bitcoin}.  We also had to research several development platforms and attempt a preliminary design in order to flush out possible problems with the platforms.  For example, Ethereum, did not have the permission based control we felt we needed.  The next problem we ran into was understanding and developing on the platform we decided on: Hyperledger.  We realised right away that developing on Hyperledger would be a very grueling and painstaking endeavour, if we built from the ground up.  We found a solution to this by using Hyperledger-Fabric, as a framework for building on.  However, this still required vast amount of knowledge, and quite a large amount of work to build the appropriate network for our application, and that is without even taking our original objective into consideration.  In order to circumvent this problem, and focus on our objective, we found Hyperledger-Composer, which uses the Hyperledger-Fabric framework, but is easily configurable.  Obviously, this caused its own set of problems.  This is because such a high level of abstraction requires a large knowledge of the underlying components when errors and bugs start to occur during development.  One instance of this was when we found that hyperledger was not responding.  When we traced the error through the extensive system we found that it was possibly because of GRPC connection timeouts.  Obviously a more in depth knowledge of the system, built over time of development on it, would give us a better idea of what was going wrong, and how to troubleshoot it.  The end result, was that it there was a comma missing in the config file that relates to the GRPC connection.  The third challenge we faced, was a set of problems that came with our actual objective.  We needed to keep a reference to users in permission items, without having them be traceable to the user.  The solution to this was that we kept an id of permission items in a hash of the user id and the company id.  In this case, the user id must be known to trace the user to the corresponding permission item, which can only be found in our database.  The second issue in this set, was implementing the “right to be forgotten” to allow users to delete their account and data. This is a problem when it comes to blockchain and more specifically Hyperledger Fabric, given the ledger is an immutable history of transactions \cite{WhyHyper54:online}.   The solution we found to this was to update all permission to false, thereby requiring a change in the global state, and then deleting the user from our database.  This solves the problem, because once the user id is gone, there is no way to trace it back to the user.
 
 
-% if have a single appendix:
-%\appendix[Proof of the Zonklar Equations]
-% or
-%\appendix  % for no appendix heading
-% do not use \section anymore after \appendix, only \section*
-% is possibly needed
+\section{Evaluation and Results} \label{sec:eval}
 
-% use appendices with more than one appendix
-% then use \section to start each appendix
-% you must declare a \section before using any
-% \subsection or using \label (\appendices by itself
-% starts a section numbered zero.)
-%
+The best way to evaluate this project is according to three main metrics.  Those metrics being: Performance, Usability for Users, and Usability for Companies.  In regards to performance, the POST/PUT requests to composer’s REST api seem very slow.  The requests tend to take roughly 3 seconds, even when all nodes are on localhost.  Hyperledger-Fabric is a permission based blockchain, and is able to use more computationally efficient methods than proof-of-work to reach consensus, however, these methods still take a considerable amount of time.  All transactions must reach a consensus by a pre-set number of nodes in order to change the global state.  The second metric, Usability for Users, seems to fill many of the requirements set out by the Office of the Privacy Commissioner of Canada \cite{Canadian67:online} in their design for privacy.  The interface is simple, and the user can give permission just as easily as they can remove it.  The user can browse companies in a single list, and add/edit permissions as they wish.  The third metric, Usability for Companies, seems to also be quite successful.  The interface is very basic, and not much work is needed beyond writing a script to get whatever info they can.  They can use our rest API to automate the process, or just use our frontend as their needs dictate.  Overall, we feel this project is very successful in building the groundwork for a third party regulated consent management system, and feel there is a great deal of applications this can be used for.
 
+We also evaluated our project based on the Privacy by Design 7 Foundational Principles as outlined in \cite{cavoukian2010privacy}. The 7 foundational principles are as follows.
 
-\appendices
-\section{Proof of the First Zonklar Equation}
-Appendix one text goes here.
+\begin{enumerate}
+  \item Proactive not Reactive
+  \item Privacy as the Default Setting
+  \item Privacy Embedded into Design
+  \item Full Functionality -- Positive-Sum, not Zero-Sum
+  \item End-to-End Security
+  \item Visibility and Transparency
+  \item Respect for User Privacy -- Keep it User Centric
+\end{enumerate}
 
-% you can choose not to have a title for an appendix
-% if you want by leaving the argument blank
-\section{}
-Appendix two text goes here.
+What follows, therefore, is our evaluation of these principles.
+
+\subsection{Proactive not Reactive}
+In order for a company to be able to be a part of this system they must be accredited first by a set of criteria so that way we can validate their processes in terms of handling the data that is allowed to them through the system. This way we can assure privacy and security of the data before it is given out, instead of afterwards when they have already been given the data.
 
 
-% use section* for acknowledgment
-\section*{Acknowledgment}
+\subsection{Privacy as the Default Setting}
+Privacy as the default settings, means a user’s info is private by design and if they want to make it available, they need to explicitly allow it \cite{cavoukian2010privacy}. For example, for a social networking site, user’s cannot see you information unless you allow other user’s to see it, rather than the default being they can see it and you have to explicitly turn it off. With this definition in mind, our system follows this principle, given that a company has no knowledge whatsoever about a user until they add permissions for that company. Even then, the company can only see the information they’ve been given access to by the user. 
+
+\subsection{Privacy Embedded into Design}
+Our system was built with privacy and security as top priorities. The system was designed from the ground up using privacy and security principals to ensure that privacy was embedded into our design. Each element within our architecture keeps these ideas in mind, and we ensured that no sections violated these principals.
 
 
-The authors would like to thank...
+\subsection{Full Functionality -- Positive-Sum, not Zero-Sum}
+This principle is based off the assumption that there is typically a trade off between privacy, and security \cite{cavoukian2010privacy}. In our system, we take this principal to heart, and have tried to create the highest amount of security and privacy possible. With our design, the data is only able to be accessed with user permission, and can only be understood with user consent, making our system meet both the requirements for security and privacy.
+
+\subsection{End-to-End Security}
+This principle involves the assurance that all aspects of the system are secure \cite{cavoukian2010privacy}. Our system, being a prototype, does not meet this fully, given there is little security between the backend and database, as well as between the frontend/backend and the Composer REST API. This was done for convenience and the technologies involved all allow for much better methods of security, which could certainly be utilized. Therefore, even though our system as it stands does not meet complete end-to-end security, it would be very reasonable for it to meet this principle if needed. 
+
+\subsection{Visibility and Transparency}
+The idea being visibility and transparency is to ensure a system is “secure” simply because no one knows, except the creators of the system, how it works \cite{cavoukian2010privacy}. By making the system open source for example, you allow others to verify the security of the system \cite{cavoukian2010privacy}. For our project to follow this principle we would need to make it open source. All the tools we used, specifically Hyperledger, are all open source tools, allows this system to follow this principle.
+
+\subsection{Respect for User Privacy -- Keep it User Centric}
+The idea for this principle is that the user should be involved and have a significant say in their own privacy \cite{cavoukian2010privacy}. Our system design directly implements this idea by giving the user full control over their data and privacy. The user is the only one who can access their data without explicit permission, maintaining this principal.
+
+\section{Conclussion and Future Works} \label{sec:conclussion}
+
+\subsection{Conclussion} 
+Based on the work above, we believe that we have created a system that meets the guiding principles set down by GDPR in regards to data privacy. Blockchain presents inherent issues in regards to the removal of data, however our system has provided a secure way to avoid putting blockchain in the first place, while maintaining the privileges of data access in the secure blockchain. Our system makes sure that privileges are kept secure and anonymous on the blockchain, with no way of retrieval after the customer removes their data. this provides a succinct way to protect customer rights, while maintaining the integrity of the blockchain.
+
+\subsection{Future Work}
+While our solution is comprehensive, there are many areas where it can be scaled up and improved. We have several major areas where future work can be conducted.  The first area that we can work on, is the scaling of hyperledger.  By design, our solution should be able to scale to a fairly large size.  While doing so, it must remain responsive, and practical.  This will need to be simulated and tested as best as possible.  The next area is to provide access cards for a user/company to set their permissions with.  This will make it easier to authenticate with the composer REST server.  Another addition, would be the use of a second key pair in transactions as an additional firewall.  This would prevent the ability to link transactions to a single public key \cite{nakamoto2008bitcoin}.  The final area we would like to see work done, is that of developing a standard privacy policy, and ensuring that any companies partaking in the blockchain consent management system are properly accredited.
+
+We also considered an alternate architecture, where each the user would have their own application to interact with hyperledger and the data requests from the backend.  This would be to allow a company to interact with our application through the use of an API as illustrated in Figure \ref{fig:FutureArch}.  Companies would be able to integrate our solution into their own applications how they would like, and have all interactions controlled programmatically.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=2.5in]{future_arch}
+  \caption{Alternative System Architecture}
+  \label{fig:FutureArch}
+\end{figure}
+
+In addition, we have identified 2 potential use cases where our solution would be able to be used in real world applications. First, our solution could be used in medical and clinical trials. Using our solution would ensure stockholders do not tamper with trial results and ensure test subjects are informed on every step. This would enhance patient privacy and control over their data, while simultaneously guaranteeing the validity of the data being used in the experiments.
+
+The second use case we have identified, is having a company which customers can use to store their data, which third part companies would have to go through to access their data. Instead of each company holding on to their individual copy of the data, the customer data could be consolidated in a single location, with the customers in control of permissions.  This of course bring us back to the idea of a committee ensuring that any company using the database, is properly accredited by a standards organisation.
 
 
-% Can use something like this to put references on a page
-% by themselves when using endfloat and the captionsoff option.
-\ifCLASSOPTIONcaptionsoff
-  \newpage
-\fi
-
-
-
-% trigger a \newpage just before the given reference
-% number - used to balance the columns on the last page
-% adjust value as needed - may need to be readjusted if
-% the document is modified later
-%\IEEEtriggeratref{8}
-% The "triggered" command can be changed if desired:
-%\IEEEtriggercmd{\enlargethispage{-5in}}
-
-% references section
-
-% can use a bibliography generated by BibTeX as a .bbl file
-% BibTeX documentation can be easily obtained at:
-% http://mirror.ctan.org/biblio/bibtex/contrib/doc/
-% The IEEEtran BibTeX style support page is at:
-% http://www.michaelshell.org/tex/ieeetran/bibtex/
-%\bibliographystyle{IEEEtran}
-% argument is your BibTeX string definitions and bibliography database(s)
-%\bibliography{IEEEabrv,../bib/paper}
-%
-% <OR> manually copy in the resultant .bbl file
-% set second argument of \begin to the number of references
-% (used to reserve space for the reference number labels box)
-% \begin{thebibliography}{1}
-
-% \bibitem{IEEEhowto:kopka}
-% H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-%   0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
-
-% \end{thebibliography}
-\bibliography{IEEEexample}{}
+\bibliography{sources}{}
 \bibliographystyle{IEEEtran}
 
-% biography section
-% 
-% If you have an EPS/PDF photo (graphicx package needed) extra braces are
-% needed around the contents of the optional argument to biography to prevent
-% the LaTeX parser from getting confused when it sees the complicated
-% \includegraphics command within an optional argument. (You could create
-% your own custom macro containing the \includegraphics command to make things
-% simpler here.)
-%\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
-% or if you just want to reserve a space for a photo:
-
-\begin{IEEEbiography}{Michael Shell}
-Biography text here.
-\end{IEEEbiography}
-
-% if you will not have a photo at all:
-\begin{IEEEbiographynophoto}{John Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
-
-% insert where needed to balance the two columns on the last page with
-% biographies
-%\newpage
-
-\begin{IEEEbiographynophoto}{Jane Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
-
-% You can push biographies down or up by placing
-% a \vfill before or after them. The appropriate
-% use of \vfill depends on what kind of text is
-% on the last page and whether or not the columns
-% are being equalized.
-
-%\vfill
-
-% Can be used to pull up biographies so that the bottom of the last one
-% is flush with the other column.
-%\enlargethispage{-5in}
-
-
-
-% that's all folks
 \end{document}
-
-
