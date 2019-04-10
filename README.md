@@ -98,6 +98,3 @@ If actions such as users adding/editting permissions or companies adding their i
 
 Solution: run `startup.sh` again to restart the network.
 
-### Company profile says "No Entries" after adding permissions
-
-Refeshing the page should cause entries to be successfully retrieved.
